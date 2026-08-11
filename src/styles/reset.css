@@ -1,0 +1,93 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 20rem;
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+picture,
+video,
+canvas {
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  border: 0;
+}
+
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+:target {
+  scroll-margin-block-start: calc(var(--navbar-height) + var(--space-4));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

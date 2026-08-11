@@ -1,0 +1,87 @@
+---
+interface Props {
+  rating?: number | null;
+  text: string;
+  author?: string | null;
+  source?: string | null;
+  developmentOnly?: boolean;
+}
+
+const {
+  rating = null,
+  text,
+  author = null,
+  source = null,
+  developmentOnly = false,
+} = Astro.props;
+---
+
+<article class="review-card">
+  {developmentOnly && <p class="review-card__status">Contenido de desarrollo</p>}
+  {
+    rating !== null && (
+      <p class="review-card__rating" aria-label={`${rating} de 5 estrellas`}>
+        <span aria-hidden="true">{'★'.repeat(rating)}{'☆'.repeat(5 - rating)}</span>
+      </p>
+    )
+  }
+  <blockquote class="review-card__quote">
+    <p>“{text}”</p>
+  </blockquote>
+  {
+    (author || source) && (
+      <footer class="review-card__attribution">
+        {author && <cite>— {author}</cite>}
+        {source && <span>{source}</span>}
+      </footer>
+    )
+  }
+</article>
+
+<style>
+  .review-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    min-height: 12rem;
+    padding: var(--space-5);
+    color: var(--color-white);
+    background: rgb(255 255 255 / 6%);
+    border: 1px solid rgb(112 195 196 / 32%);
+    border-radius: var(--radius-lg);
+  }
+
+  .review-card__status {
+    justify-self: start;
+    padding: var(--space-1) var(--space-3);
+    color: var(--color-highlight);
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .review-card__rating {
+    color: var(--color-highlight);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .review-card__quote {
+    color: var(--color-white);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .review-card__attribution {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+  }
+
+  .review-card__attribution cite {
+    font-style: normal;
+    font-weight: var(--font-weight-semibold);
+  }
+</style>

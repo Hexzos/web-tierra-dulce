@@ -1,0 +1,208 @@
+<section class="hero" id="inicio" aria-labelledby="hero-title">
+  <div class="hero__inner container">
+    <p class="hero__eyebrow">Tierra Dulce <span aria-hidden="true">·</span> Villa Alemana</p>
+
+    <h1 class="hero__title" id="hero-title">Algo dulce siempre cae bien.</h1>
+
+    <p class="hero__supporting">Cheesecakes, galletas, queques y mucho más.</p>
+
+    <div class="hero__media">
+      <img
+        class="hero__image"
+        src="/images/stock/vitrina.jpg"
+        alt="Vitrina con una variedad de galletas y rollos dulces"
+        width="1448"
+        height="1931"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
+
+    <div class="hero__action">
+      <a class="hero__cta" href="#productos">
+        Ver productos
+        <span aria-hidden="true">↓</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<aside class="brand-strip" aria-label="Identidad de Tierra Dulce">
+  <p class="brand-strip__content container">
+    <span>Hecho con cariño</span>
+    <span aria-hidden="true">✦</span>
+    <span>Villa Alemana</span>
+    <span aria-hidden="true">✦</span>
+    <span>Momentos dulces</span>
+    <span aria-hidden="true">✦</span>
+    <span>Tierra Dulce</span>
+  </p>
+</aside>
+
+<style>
+  .hero {
+    overflow: clip;
+    background: var(--color-background);
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-areas:
+      "eyebrow"
+      "title"
+      "supporting"
+      "visual"
+      "action";
+    gap: 0;
+    padding-block: clamp(var(--space-6), 8vw, var(--space-8));
+  }
+
+  .hero__eyebrow {
+    grid-area: eyebrow;
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .hero__eyebrow span {
+    color: var(--color-primary);
+  }
+
+  .hero__title {
+    grid-area: title;
+    max-width: 14ch;
+    margin-block-start: var(--space-3);
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-hero);
+  }
+
+  .hero__supporting {
+    grid-area: supporting;
+    max-width: 34ch;
+    margin-block-start: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-lg);
+  }
+
+  .hero__media {
+    grid-area: visual;
+    width: 100%;
+    max-width: 34rem;
+    aspect-ratio: 4 / 3;
+    margin-block-start: var(--space-5);
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+
+  .hero__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+
+  .hero__action {
+    grid-area: action;
+    margin-block-start: var(--space-5);
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    min-height: 2.875rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding-inline: var(--space-5);
+    color: var(--color-teal-900);
+    background: var(--color-primary);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition:
+      background-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .hero__cta:hover,
+  .hero__cta:active {
+    background: var(--color-primary-soft);
+  }
+
+  .hero__cta:active {
+    transform: translateY(0.125rem);
+  }
+
+  .brand-strip {
+    padding-block: var(--space-3);
+    color: var(--color-teal-900);
+    background: var(--color-primary);
+  }
+
+  .brand-strip__content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1) var(--space-3);
+    color: var(--color-teal-900);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    line-height: 1.4;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .brand-strip__content span[aria-hidden="true"] {
+    color: var(--color-white);
+  }
+
+  @media (min-width: 48rem) {
+    .hero__inner {
+      grid-template-areas:
+        "eyebrow visual"
+        "title visual"
+        "supporting visual"
+        "action visual";
+      grid-template-columns: minmax(0, 0.85fr) minmax(20rem, 1.15fr);
+      grid-template-rows: auto auto auto 1fr;
+      column-gap: clamp(var(--space-6), 6vw, var(--space-9));
+      align-items: start;
+      padding-block: clamp(var(--space-7), 6vw, var(--space-9));
+    }
+
+    .hero__title {
+      margin-block-start: var(--space-4);
+    }
+
+    .hero__supporting {
+      margin-block-start: var(--space-4);
+    }
+
+    .hero__media {
+      align-self: center;
+      max-width: none;
+      aspect-ratio: 5 / 4;
+      margin-block-start: 0;
+    }
+
+    .hero__action {
+      align-self: end;
+      margin-block-start: var(--space-6);
+    }
+
+    .brand-strip {
+      padding-block: var(--space-4);
+    }
+
+    .brand-strip__content {
+      gap: var(--space-4);
+      font-size: var(--font-size-sm);
+    }
+  }
+</style>

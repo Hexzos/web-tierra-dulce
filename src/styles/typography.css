@@ -1,0 +1,46 @@
+body {
+  color: var(--color-text);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  max-width: 22ch;
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+small {
+  font-size: var(--font-size-sm);
+}
+
+strong {
+  font-weight: var(--font-weight-semibold);
+}

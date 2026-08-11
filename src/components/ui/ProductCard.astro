@@ -1,0 +1,163 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  category: string;
+  description?: string;
+  price?: number | null;
+  image?: string | null;
+  imageAlt?: string | null;
+  imageWidth?: number;
+  imageHeight?: number;
+  featured?: boolean;
+}
+
+const {
+  id,
+  name,
+  category,
+  description,
+  price = null,
+  image = null,
+  imageAlt = null,
+  imageWidth,
+  imageHeight,
+} = Astro.props;
+---
+
+<article class="product-card" aria-labelledby={`${id}-title`}>
+  <div class="product-card__media">
+    {image ? (
+      <img
+        class="product-card__image"
+        src={image}
+        alt={imageAlt ?? ''}
+        width={imageWidth}
+        height={imageHeight}
+        loading="lazy"
+      />
+    ) : (
+      <div class="product-image-placeholder" aria-hidden="true">
+        <span>Imagen pendiente</span>
+      </div>
+    )}
+  </div>
+
+  <div class="product-card__content">
+    <p class="product-card__category">{category}</p>
+    <h3 class="product-card__title" id={`${id}-title`}>{name}</h3>
+    {description && <p class="product-card__description">{description}</p>}
+    {price !== null && <p class="product-card__price">{price}</p>}
+  </div>
+</article>
+
+<style>
+  .product-card {
+    display: flex;
+    min-width: 0;
+    height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--transition-base),
+      box-shadow var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .product-card__media {
+    display: grid;
+    aspect-ratio: 4 / 3;
+    place-items: center;
+    overflow: hidden;
+    background: var(--color-accent-light);
+  }
+
+  .product-card__image,
+  .product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    transition: transform var(--transition-base);
+  }
+
+  .product-card__image {
+    width: 84%;
+    height: 84%;
+    object-fit: contain;
+  }
+
+  .product-image-placeholder {
+    position: relative;
+    display: grid;
+    isolation: isolate;
+    place-items: end;
+    padding: var(--space-4);
+    overflow: hidden;
+    color: var(--color-brown-dark);
+    background:
+      linear-gradient(145deg, transparent 35%, rgb(237 193 118 / 72%)),
+      var(--color-accent-light);
+  }
+
+  .product-image-placeholder::before {
+    position: absolute;
+    z-index: -1;
+    width: 52%;
+    aspect-ratio: 1;
+    top: 18%;
+    left: 24%;
+    content: "";
+    border: 1px dashed var(--color-accent-warm);
+    border-radius: 50%;
+  }
+
+  .product-image-placeholder span {
+    padding: var(--space-2) var(--space-3);
+    background: rgb(255 255 255 / 72%);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-xs);
+  }
+
+  .product-card__content {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+  }
+
+  .product-card__category {
+    color: var(--color-interactive);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .product-card__title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .product-card__description {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .product-card__price {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .product-card:hover {
+      border-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-soft);
+      transform: translateY(-0.125rem);
+    }
+
+    .product-card:hover .product-card__image,
+    .product-card:hover .product-image-placeholder {
+      transform: scale(1.025);
+    }
+  }
+</style>

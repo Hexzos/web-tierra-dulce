@@ -1,0 +1,246 @@
+---
+import { business } from '../../data/business.js';
+---
+
+<section class="location section" id="visitanos" aria-labelledby="location-title">
+  <div class="location__layout container">
+    <div class="location__information">
+      <header class="location__header">
+        <p class="location__eyebrow">Visítanos</p>
+        <h2 id="location-title">Un lugar dulce en Villa Alemana.</h2>
+        <p class="location__supporting">
+          Encuentra Tierra Dulce en Villa Alemana y ven a conocer nuestros productos.
+        </p>
+      </header>
+
+      <dl class="location__details">
+        <div class="location__detail">
+          <div class="location__detail-heading">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path
+                d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            <dt>Dirección</dt>
+          </div>
+          <dd>{business.address ?? 'Dirección pendiente'}</dd>
+        </div>
+
+        <div class="location__detail">
+          <div class="location__detail-heading">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+              ></circle>
+              <path
+                d="M12 7v5l3 2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            <dt>Horarios</dt>
+          </div>
+          <dd>{business.hours ?? 'Horario pendiente'}</dd>
+        </div>
+      </dl>
+
+      <div class="location__actions">
+        {
+          business.mapsUrl ? (
+            <a class="location__cta" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+              Cómo llegar <span aria-hidden="true">→</span>
+            </a>
+          ) : (
+            <button class="location__cta" type="button" disabled aria-disabled="true">
+              Cómo llegar <span aria-hidden="true">→</span>
+            </button>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="location__map">
+      <!-- TODO: Replace with a real Google Maps embed after the location is confirmed. -->
+      <div class="map-placeholder" role="img" aria-label="Mapa pendiente de la ubicación de Tierra Dulce">
+        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+          <path
+            d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+        </svg>
+        <span>Mapa pendiente</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .location {
+    background: var(--color-white);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .location__layout {
+    display: grid;
+    gap: clamp(var(--space-6), 7vw, var(--space-8));
+  }
+
+  .location__information {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+  }
+
+  .location__header {
+    display: grid;
+    max-width: 38rem;
+    gap: var(--space-3);
+  }
+
+  .location__eyebrow {
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .location__supporting {
+    max-width: 46ch;
+    color: var(--color-text-muted);
+  }
+
+  .location__details {
+    display: grid;
+    width: 100%;
+    gap: var(--space-3);
+    margin-block: var(--space-6) 0;
+  }
+
+  .location__detail {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .location__detail-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .location__detail dd {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .location__cta {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding-inline: var(--space-5);
+    color: var(--color-ink);
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .location__actions {
+    display: flex;
+    margin-block-start: clamp(var(--space-4), 2vw, var(--space-5));
+  }
+
+  .location__cta:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .location__map {
+    min-width: 0;
+  }
+
+  .map-placeholder {
+    display: grid;
+    width: 100%;
+    height: clamp(13.75rem, 65vw, 16rem);
+    place-content: center;
+    gap: var(--space-3);
+    color: var(--color-brown-dark);
+    background: var(--color-accent-light);
+    border: 1px dashed var(--color-interactive);
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+
+  .map-placeholder span {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (min-width: 40rem) {
+    .location__details {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .map-placeholder {
+      height: clamp(14rem, 35vw, 18rem);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .location__layout {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .location__information {
+      display: flex;
+      min-height: clamp(17.5rem, 22vw, 21.25rem);
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .location__details {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-block: var(--space-5) 0;
+    }
+
+    .location__actions {
+      margin-block-start: auto;
+      padding-block-start: clamp(1.25rem, 2vw, var(--space-5));
+    }
+
+    .map-placeholder {
+      height: clamp(17.5rem, 22vw, 21.25rem);
+    }
+  }
+</style>

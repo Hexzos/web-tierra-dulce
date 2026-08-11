@@ -1,0 +1,111 @@
+:root {
+  /* Brand palette and semantic roles */
+  --color-primary: #70c3c4;
+  --color-primary-soft: #70c3c4;
+  --color-primary-dark: #448884;
+  --color-ink: #102423;
+  --color-contrast: #173e3d;
+  --color-interactive: #8c5932;
+  --color-brown-dark: #34261a;
+  --color-accent-warm: #b7804d;
+  --color-accent-light: #e0b27f;
+  --color-highlight: #edc176;
+  --color-white: #ffffff;
+
+  --color-background: var(--color-white);
+  --color-surface: var(--color-white);
+  --color-surface-muted: var(--color-accent-light);
+  --color-text: var(--color-ink);
+  --color-text-muted: var(--color-contrast);
+  --color-accent: var(--color-accent-warm);
+  --color-accent-soft: var(--color-accent-light);
+  --color-border: rgb(16 36 35 / 16%);
+  --color-focus: var(--color-interactive);
+
+  /* Temporary aliases for existing approved components */
+  --color-cream-50: var(--color-white);
+  --color-cream-100: var(--color-accent-light);
+  --color-rose-100: var(--color-highlight);
+  --color-rose-300: var(--color-accent-warm);
+  --color-cookie-300: var(--color-accent-light);
+  --color-teal-700: var(--color-primary-dark);
+  --color-teal-900: var(--color-contrast);
+  --color-cocoa-500: var(--color-interactive);
+  --color-cocoa-700: var(--color-brown-dark);
+  --color-cocoa-900: var(--color-ink);
+
+  /* Component roles */
+  --color-navbar-background: var(--color-primary);
+  --color-navbar-text: var(--color-ink);
+  --color-navbar-interactive: var(--color-contrast);
+  --color-navbar-cta: var(--color-contrast);
+  --navbar-height-mobile: 4.75rem;
+  --navbar-height-desktop: 5.5rem;
+  --navbar-logo-height-mobile: 3.5rem;
+  --navbar-logo-height-desktop: 4.5rem;
+  --navbar-logo-max-width-small: 10.3125rem;
+  --navbar-logo-max-width-mobile: 11.5625rem;
+  --navbar-logo-max-width-desktop: 16.25rem;
+  --navbar-font-size: 1rem;
+  --navbar-link-gap: 2rem;
+
+  /* Typography */
+  --font-family-sans: "Montserrat", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: clamp(1.25rem, 1.18rem + 0.35vw, 1.5rem);
+  --font-size-2xl: clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem);
+  --font-size-3xl: clamp(2.25rem, 1.8rem + 2.25vw, 3.75rem);
+  --font-size-hero: clamp(2.6rem, 11vw, 3rem);
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-hero: 1.04;
+  --line-height-tight: 1.15;
+  --line-height-heading: 1.25;
+  --line-height-body: 1.65;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-wide: 0.08em;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --section-padding-block: clamp(4.5rem, 7vw, 6.5rem);
+  --section-min-height: 38rem;
+  --section-space: var(--section-padding-block);
+
+  /* Layout and shape */
+  --container-max-width: 75rem;
+  --container-gutter: clamp(var(--space-4), 4vw, var(--space-6));
+  --content-max-width: 42rem;
+  --navbar-height: var(--navbar-height-mobile);
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-pill: 999px;
+  --shadow-soft: 0 1rem 2.5rem rgb(16 36 35 / 10%);
+  --transition-fast: 160ms ease;
+  --transition-base: 240ms ease;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --navbar-height: var(--navbar-height-desktop);
+  }
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --font-size-hero: clamp(3.5rem, 5vw, 4.5rem);
+  }
+}

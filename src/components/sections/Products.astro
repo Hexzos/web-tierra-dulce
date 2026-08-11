@@ -1,0 +1,195 @@
+---
+import ProductCard from '../ui/ProductCard.astro';
+import { products } from '../../data/products.js';
+
+const featuredProducts = products.filter((product) => product.featured);
+const additionalProducts = products.filter((product) => !product.featured);
+---
+
+<section class="products section" id="productos" aria-labelledby="products-title" data-products>
+  <div class="container">
+    <header class="products__header">
+      <p class="products__eyebrow">Nuestros productos</p>
+      <h2 id="products-title">Algo rico para cada antojo.</h2>
+      <p class="products__supporting">
+        Descubre algunas de las preparaciones que puedes encontrar en Tierra Dulce.
+      </p>
+    </header>
+
+    <ul class="products__grid products__grid--featured" role="list">
+      {featuredProducts.map((product) => (
+        <li class="products__item">
+          <ProductCard {...product} />
+        </li>
+      ))}
+    </ul>
+
+    <div class="products__extra" id="products-extra" data-products-extra>
+      <ul class="products__grid products__grid--extra" role="list">
+        {additionalProducts.map((product) => (
+          <li class="products__item">
+            <ProductCard {...product} />
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="products__control">
+      <button
+        class="products__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="products-extra"
+        data-products-toggle
+        hidden
+      >
+        <span data-products-toggle-label>Ver más productos</span>
+        <span class="products__toggle-icon" aria-hidden="true" data-products-toggle-icon>↓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/products-toggle.js"></script>
+
+<style>
+  .products {
+    background: var(--color-background);
+  }
+
+  .products__header {
+    max-width: var(--content-max-width);
+  }
+
+  .products__eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .products__supporting {
+    max-width: 48ch;
+    margin-block-start: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .products__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .products__grid--featured {
+    margin-block-start: clamp(var(--space-6), 6vw, var(--space-8));
+  }
+
+  .products__extra {
+    overflow: hidden;
+  }
+
+  .products__grid--extra {
+    margin-block-start: var(--space-5);
+  }
+
+  .products[data-enhanced="true"] .products__extra {
+    height: 0;
+    transition: height 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .products[data-enhanced="true"] .products__grid--extra {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+    transition:
+      opacity 300ms ease,
+      transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .products[data-enhanced="true"] .products__extra.is-expanded .products__grid--extra {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .products__item {
+    min-width: 0;
+  }
+
+  .products__control {
+    display: flex;
+    justify-content: center;
+    margin-block-start: var(--space-6);
+  }
+
+  .products__toggle {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    width: auto;
+    padding: 0.65rem 1.25rem;
+    color: var(--color-white);
+    background: var(--color-contrast);
+    border: 1px solid var(--color-contrast);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-family-sans);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .products__toggle[hidden] {
+    display: none;
+  }
+
+  .products__toggle:hover,
+  .products__toggle:focus-visible,
+  .products__toggle:active {
+    color: var(--color-white);
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .products__toggle:hover,
+  .products__toggle:focus-visible {
+    transform: translateY(-1px);
+  }
+
+  .products__toggle:focus-visible {
+    outline-color: var(--color-primary);
+  }
+
+  .products__toggle:active {
+    transform: translateY(0);
+  }
+
+  @media (min-width: 48rem) {
+    .products__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+
+    .products__grid--extra {
+      margin-block-start: var(--space-6);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .products__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .products[data-enhanced="true"] .products__extra,
+    .products[data-enhanced="true"] .products__grid--extra {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>
