@@ -182,18 +182,43 @@ navbars.forEach((navbar) => {
 
   if (!(toggle instanceof HTMLButtonElement) || !(menu instanceof HTMLElement)) return;
 
-  const closeMenu = ({ returnFocus = false } = {}) => {
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.setAttribute('aria-label', 'Abrir menú');
+  const desktopMedia = window.matchMedia('(min-width: 64rem)');
+  let closeTimer;
+  let openAnimationFrame;
+
+  const finishClose = () => {
     menu.hidden = true;
+    menu.removeAttribute('data-open');
+    closeTimer = undefined;
+  };
+
+  const closeMenu = ({ returnFocus = false, immediate = false } = {}) => {
+    if (closeTimer !== undefined) window.clearTimeout(closeTimer);
+    if (openAnimationFrame !== undefined) cancelAnimationFrame(openAnimationFrame);
+    openAnimationFrame = undefined;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+    menu.removeAttribute('data-open');
+
+    if (immediate || reducedMotion.matches || menu.hidden) {
+      finishClose();
+    } else {
+      closeTimer = window.setTimeout(finishClose, 250);
+    }
 
     if (returnFocus) toggle.focus();
   };
 
   const openMenu = () => {
+    if (closeTimer !== undefined) window.clearTimeout(closeTimer);
+    closeTimer = undefined;
     toggle.setAttribute('aria-expanded', 'true');
-    toggle.setAttribute('aria-label', 'Cerrar menú');
+    toggle.setAttribute('aria-label', 'Cerrar menú de navegación');
     menu.hidden = false;
+    openAnimationFrame = requestAnimationFrame(() => {
+      menu.setAttribute('data-open', '');
+      openAnimationFrame = undefined;
+    });
   };
 
   toggle.addEventListener('click', () => {
@@ -215,5 +240,5 @@ navbars.forEach((navbar) => {
     }
   });
 
-  window.matchMedia('(min-width: 64rem)').addEventListener('change', () => closeMenu());
+  desktopMedia.addEventListener('change', () => closeMenu({ immediate: true }));
 });

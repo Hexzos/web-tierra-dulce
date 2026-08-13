@@ -1,6 +1,6 @@
 /**
  * DEVELOPMENT PLACEHOLDERS ONLY.
- * Replace this entire collection with verified Tierra Dulce reviews and attribution.
+ * TODO: Reemplazar testimonios demo por reseñas reales de clientes de Tierra Dulce.
  * These entries intentionally contain no rating, testimonial, author, or source.
  */
 export const reviews = [

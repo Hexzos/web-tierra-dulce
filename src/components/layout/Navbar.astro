@@ -1,4 +1,6 @@
 ---
+import { business } from '../../data/business.js';
+
 const navigationItems = [
   { label: 'Inicio', href: '#inicio' },
   { label: 'Productos', href: '#productos' },
@@ -26,7 +28,7 @@ const navigationItems = [
       type="button"
       aria-expanded="false"
       aria-controls="primary-navigation"
-      aria-label="Abrir menú"
+      aria-label="Abrir menú de navegación"
       data-menu-toggle
     >
       <span class="navbar__toggle-icon" aria-hidden="true">
@@ -54,12 +56,13 @@ const navigationItems = [
 
       <a
         class="navbar__cta"
-        href="https://wa.me/"
+        href={`https://wa.me/${business.whatsapp.replace(/\D/g, '')}`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Contactar a Tierra Dulce por WhatsApp (abre en una pestaña nueva)"
       >
-        WhatsApp
+        <span class="navbar__cta-label navbar__cta-label--desktop">WhatsApp</span>
+        <span class="navbar__cta-label navbar__cta-label--mobile">Contactar por WhatsApp</span>
       </a>
     </div>
   </nav>
@@ -113,8 +116,8 @@ const navigationItems = [
 
   .navbar__toggle {
     display: inline-grid;
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 3rem;
+    height: 3rem;
     padding: 0;
     place-items: center;
     color: var(--color-navbar-text);
@@ -163,16 +166,30 @@ const navigationItems = [
 
   .navbar__menu {
     position: absolute;
-    top: calc(100% + var(--space-2));
-    right: var(--container-gutter);
-    left: var(--container-gutter);
+    top: 100%;
+    left: 50%;
     display: grid;
     gap: var(--space-4);
-    padding: var(--space-4);
+    width: 100vw;
+    max-height: calc(100vh - var(--navbar-height));
+    padding: var(--space-3) var(--container-gutter) var(--space-5);
+    overflow-y: auto;
     background: var(--color-navbar-background);
-    border: 1px solid rgb(16 36 35 / 16%);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-soft);
+    border-top: 1px solid rgb(16 36 35 / 16%);
+    opacity: 0;
+    transform: translate(-50%, -0.5rem);
+    visibility: hidden;
+    transition:
+      opacity 250ms ease,
+      transform 250ms ease,
+      visibility 0s linear 250ms;
+  }
+
+  .navbar__menu[data-open] {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    visibility: visible;
+    transition-delay: 0s;
   }
 
   .navbar__menu[hidden] {
@@ -181,7 +198,7 @@ const navigationItems = [
 
   .navbar__links {
     display: grid;
-    gap: var(--space-1);
+    gap: 0;
   }
 
   .navbar__link,
@@ -195,10 +212,11 @@ const navigationItems = [
   .navbar__link {
     position: relative;
     display: grid;
-    padding-inline: var(--space-3);
+    min-height: 3rem;
+    padding: var(--space-3) 0;
     color: var(--color-navbar-text);
     border-radius: var(--radius-sm);
-    font-size: var(--navbar-font-size);
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-medium);
   }
 
@@ -213,6 +231,24 @@ const navigationItems = [
     visibility: hidden;
   }
 
+  .navbar__link > span {
+    position: relative;
+  }
+
+  .navbar__link > span::after {
+    position: absolute;
+    right: 0;
+    bottom: -0.35rem;
+    left: 0;
+    height: 0.125rem;
+    content: "";
+    background: var(--color-navbar-interactive);
+    border-radius: var(--radius-pill);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms ease;
+  }
+
   .navbar__link:hover,
   .navbar__link:focus-visible,
   .navbar__link:active {
@@ -224,22 +260,9 @@ const navigationItems = [
     font-weight: var(--font-weight-bold);
   }
 
-  .navbar__link::after {
-    position: absolute;
-    right: var(--space-3);
-    bottom: var(--space-1);
-    left: var(--space-3);
-    height: 0.125rem;
-    content: "";
-    background: var(--color-navbar-interactive);
-    border-radius: var(--radius-pill);
-    opacity: 0;
-    transition: opacity var(--transition-fast);
-  }
-
-  .navbar__link:hover::after,
-  .navbar__link:focus-visible::after {
-    opacity: 1;
+  .navbar__link:hover > span::after,
+  .navbar__link:focus-visible > span::after {
+    transform: scaleX(1);
   }
 
   .navbar__cta {
@@ -254,6 +277,10 @@ const navigationItems = [
     transition:
       background-color var(--transition-fast),
       transform var(--transition-fast);
+  }
+
+  .navbar__cta-label--desktop {
+    display: none;
   }
 
   .navbar__cta:hover,
@@ -289,6 +316,12 @@ const navigationItems = [
       border: 0;
       border-radius: 0;
       box-shadow: none;
+      opacity: 1;
+      overflow: visible;
+      max-height: none;
+      transform: none;
+      visibility: visible;
+      transition: none;
     }
 
     .navbar__links {
@@ -298,11 +331,34 @@ const navigationItems = [
     }
 
     .navbar__link {
+      min-height: 2.75rem;
       padding-inline: var(--space-3);
+      padding-block: 0;
+      font-size: var(--navbar-font-size);
     }
 
     .navbar__cta {
       min-height: 2.625rem;
+    }
+
+    .navbar__cta-label--desktop {
+      display: inline;
+    }
+
+    .navbar__cta-label--mobile {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .navbar__toggle-icon span,
+    .navbar__menu,
+    .navbar__link > span::after {
+      transition-duration: 0.01ms;
+    }
+
+    .navbar__menu {
+      transform: translate(-50%, 0);
     }
   }
 </style>

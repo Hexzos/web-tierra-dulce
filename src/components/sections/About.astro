@@ -6,7 +6,7 @@ import BrandMoment from './BrandMoment.astro';
   <BrandMoment />
 
   <div class="about__story">
-    <div class="about__story-inner container">
+    <div class="about__story-inner container" data-reveal>
       <div class="about__visual">
         <div class="about__logo-panel">
           <img
@@ -24,14 +24,9 @@ import BrandMoment from './BrandMoment.astro';
       <div class="about__copy">
         <p class="about__eyebrow">Tierra Dulce <span aria-hidden="true">·</span> Villa Alemana</p>
         <h2>Somos Tierra Dulce.</h2>
-        <p>
-          Un espacio para disfrutar cheesecakes, galletas, queques y otros sabores dulces en
-          Villa Alemana.
-        </p>
-        <!-- TODO: Replace with the real Tierra Dulce story. -->
-        <p class="about__placeholder-copy">
-          Aquí compartiremos próximamente la historia real de Tierra Dulce.
-        </p>
+        <p>Nacimos a mediados de 2024 desde la cocina de nuestra casa, con una idea sencilla: crear algo rico, versátil y preparado con ingredientes de calidad.</p>
+        <p>Inspirados en las famosas New York Cookies, comenzamos preparando galletas de distintos sabores, con chocolate real, crujientes por fuera y blanditas por dentro.</p>
+        <p>Hoy esa idea familiar tiene su primer local en Villa Alemana, donde seguimos creando nuevos sabores y sumando dulces para compartir con más personas.</p>
       </div>
     </div>
   </div>
@@ -95,12 +90,6 @@ import BrandMoment from './BrandMoment.astro';
 
   .about__copy > p:not(.about__eyebrow) {
     color: var(--color-text-muted);
-  }
-
-  .about__placeholder-copy {
-    padding-inline-start: var(--space-4);
-    border-inline-start: 0.1875rem solid var(--color-primary);
-    font-size: var(--font-size-sm);
   }
 
   @media (min-width: 48rem) {

@@ -8,7 +8,7 @@ const additionalProducts = products.filter((product) => !product.featured);
 
 <section class="products section" id="productos" aria-labelledby="products-title" data-products>
   <div class="container">
-    <header class="products__header">
+    <header class="products__header" data-reveal>
       <p class="products__eyebrow">Nuestros productos</p>
       <h2 id="products-title">Algo rico para cada antojo.</h2>
       <p class="products__supporting">
@@ -16,7 +16,7 @@ const additionalProducts = products.filter((product) => !product.featured);
       </p>
     </header>
 
-    <ul class="products__grid products__grid--featured" role="list">
+    <ul class="products__grid products__grid--featured" role="list" data-reveal>
       {featuredProducts.map((product) => (
         <li class="products__item">
           <ProductCard {...product} />
@@ -24,7 +24,7 @@ const additionalProducts = products.filter((product) => !product.featured);
       ))}
     </ul>
 
-    <div class="products__extra" id="products-extra" data-products-extra>
+    <div class="products__extra" id="products-extra" data-products-extra data-reveal>
       <ul class="products__grid products__grid--extra" role="list">
         {additionalProducts.map((product) => (
           <li class="products__item">

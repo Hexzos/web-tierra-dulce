@@ -45,10 +45,39 @@ main {
   border: 0;
 }
 
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(0.875rem);
+  transition:
+    opacity 580ms ease-out,
+    transform 580ms ease-out;
+}
+
+.reveal-ready [data-reveal][data-revealed] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media (min-width: 48rem) {
   .section {
     display: grid;
     min-height: var(--section-min-height);
     align-items: center;
+  }
+
+  .reveal-ready [data-reveal] {
+    transform: translateY(1.375rem);
+  }
+
+  .reveal-ready [data-reveal][data-revealed] {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

@@ -1,14 +1,16 @@
 /**
- * DEMONSTRATION DATA ONLY.
- * Replace every entry with the verified Tierra Dulce catalogue when available.
+ * TODO: Reemplazar imágenes placeholder de productos por fotografías definitivas,
+ * idealmente PNG/WebP con fondo transparente y encuadre consistente.
+ * TODO: Reemplazar imágenes demo_producto_1...6 por fotografías definitivas de
+ * Tierra Dulce cuando sean entregadas.
  * Prices intentionally remain null to avoid inventing commercial information.
  */
 export const products = [
   {
-    id: 'demo-cheesecakes',
-    name: 'Cheesecakes',
-    category: 'Cheesecakes',
-    description: 'Espacio demostrativo para presentar esta categoría del catálogo.',
+    id: 'new-york-cookies',
+    name: 'New York Cookies',
+    category: 'Cookies',
+    description: 'Nuestro producto estrella. Cookies preparadas con ingredientes de calidad y chocolate real, crujientes por fuera y blanditas por dentro.',
     price: null,
     image: '/images/products/demo_producto_1.png',
     imageAlt: 'Tres galletas con chips de chocolate',
@@ -17,10 +19,10 @@ export const products = [
     featured: true,
   },
   {
-    id: 'demo-galletas',
-    name: 'Galletas',
-    category: 'Galletas',
-    description: 'Espacio demostrativo para presentar esta categoría del catálogo.',
+    id: 'sabores-para-todos',
+    name: 'Sabores para todos',
+    category: 'Cookies',
+    description: 'Chocolate, Red Velvet, Tiramisú, Cookies & Cream y muchas combinaciones más. Revisa nuestros sabores disponibles y encuentra tu favorita.',
     price: null,
     image: '/images/products/demo_producto_2.png',
     imageAlt: 'Porción de torta cubierta con chocolate y frutos secos',
@@ -29,10 +31,10 @@ export const products = [
     featured: true,
   },
   {
-    id: 'demo-queques',
-    name: 'Queques',
-    category: 'Queques',
-    description: 'Espacio demostrativo para presentar esta categoría del catálogo.',
+    id: 'siempre-algo-nuevo',
+    name: 'Siempre algo nuevo',
+    category: 'Cookies especiales',
+    description: 'Nos encanta probar nuevas combinaciones. Descubre sabores especiales, novedades y cookies que van cambiando en nuestra vitrina.',
     price: null,
     image: '/images/products/demo_producto_3.png',
     imageAlt: 'Dona con cobertura de chocolate y sprinkles de colores',
@@ -41,10 +43,10 @@ export const products = [
     featured: true,
   },
   {
-    id: 'demo-postres',
-    name: 'Postres',
-    category: 'Otros',
-    description: 'Espacio demostrativo para futuras preparaciones del catálogo.',
+    id: 'rollos-de-canela',
+    name: 'Rollos de Canela',
+    category: 'Repostería',
+    description: 'Suaves, dulces y perfectos para acompañar cualquier momento del día.',
     price: null,
     image: '/images/products/demo_producto_4.png',
     imageAlt: 'Porción de pie con crema batida',
@@ -53,10 +55,10 @@ export const products = [
     featured: false,
   },
   {
-    id: 'demo-para-compartir',
-    name: 'Para compartir',
-    category: 'Otros',
-    description: 'Espacio demostrativo para futuras preparaciones del catálogo.',
+    id: 'queques-y-tortas',
+    name: 'Queques y Tortas',
+    category: 'Repostería',
+    description: 'Porque no todo son cookies. También preparamos queques y tortas para seguir llenando de sabor tus momentos especiales.',
     price: null,
     image: '/images/products/demo_producto_5.png',
     imageAlt: 'Rollo de canela cubierto con glaseado',
@@ -65,15 +67,17 @@ export const products = [
     featured: false,
   },
   {
-    id: 'demo-especiales',
-    name: 'Preparaciones especiales',
-    category: 'Otros',
-    description: 'Espacio demostrativo para futuras preparaciones del catálogo.',
+    id: 'mucho-mas',
+    name: 'Y mucho más...',
+    category: 'Novedades',
+    description: 'Nuevos sabores, ediciones especiales y otras delicias van llegando a Tierra Dulce.',
     price: null,
     image: '/images/products/demo_producto_6.png',
     imageAlt: 'Cupcake de chocolate con crema de chocolate',
     imageWidth: 672,
     imageHeight: 800,
     featured: false,
+    ctaLabel: 'Descubre las novedades',
+    ctaUrl: 'https://www.instagram.com/tierra.dulce.va/',
   },
 ];

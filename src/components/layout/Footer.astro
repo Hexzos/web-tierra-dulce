@@ -3,24 +3,29 @@ import ReviewCard from '../ui/ReviewCard.astro';
 import { business } from '../../data/business.js';
 import { reviews, reviewsCarouselConfig } from '../../data/reviews.js';
 
-const currentYear = new Date().getFullYear();
-
 const contactChannels = [
-  { key: 'whatsapp', label: 'WhatsApp', value: business.whatsapp },
-  { key: 'instagram', label: 'Instagram', value: business.instagram },
-  { key: 'facebook', label: 'Facebook', value: business.facebook },
+  {
+    key: 'whatsapp',
+    label: 'Escríbenos por WhatsApp',
+    display: business.whatsappDisplay,
+    url: `https://wa.me/${business.whatsapp.replace(/\D/g, '')}`,
+  },
+  {
+    key: 'instagram',
+    label: 'Síguenos en Instagram',
+    display: business.instagramHandle,
+    url: business.instagram,
+  },
 ];
 ---
 
 <footer class="site-footer" id="contacto">
   <div class="site-footer__main container">
-    <div class="site-footer__contact">
+    <div class="site-footer__contact" data-reveal>
       <header class="site-footer__header">
         <p class="site-footer__eyebrow">Contacto</p>
-        <h2>¿Te quedó algún antojo?</h2>
-        <p>
-          Escríbenos o síguenos para conocer nuestros productos, novedades y momentos dulces.
-        </p>
+        <h2>¿Antojo de algo dulce?</h2>
+        <p>Escríbenos, descubre nuestras novedades o ven a visitarnos en Villa Alemana.</p>
       </header>
 
       <ul class="contact-list" role="list">
@@ -61,32 +66,26 @@ const contactChannels = [
                     ></circle>
                     <circle cx="17.5" cy="6.7" r="1" fill="currentColor"></circle>
                   </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M14 21v-8h2.8l.4-3H14V8.1c0-.9.3-1.5 1.6-1.5h1.8V3.9c-.6-.1-1.4-.2-2.5-.2-2.5 0-4.2 1.5-4.2 4.3v2H8v3h2.7v8H14Z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
-                )
+                ) : null
               }
             </span>
             <div>
               <span class="contact-list__label">{channel.label}</span>
-              {channel.value ? (
-                <a href={channel.value} target="_blank" rel="noopener noreferrer">
-                  Abrir {channel.label}
-                </a>
-              ) : (
-                <span class="contact-list__pending">{channel.label} pendiente</span>
-              )}
+              <a href={channel.url} target="_blank" rel="noopener noreferrer">
+                {channel.display}
+              </a>
             </div>
           </li>
         ))}
       </ul>
+
+      <div class="payment-info">
+        <h3>Medios de pago</h3>
+        <p>Paga con tarjetas de débito y crédito a través de Mercado Pago.</p>
+      </div>
     </div>
 
-    <div class="reviews" data-carousel data-autoplay-interval={reviewsCarouselConfig.autoplayInterval}>
+    <div class="reviews" data-carousel data-autoplay-interval={reviewsCarouselConfig.autoplayInterval} data-reveal>
       <h2 class="reviews__title">Lo que dicen de nosotros</h2>
 
       <div class="reviews__viewport">
@@ -130,7 +129,11 @@ const contactChannels = [
 
   <div class="site-footer__bottom container">
     <p><strong>{business.name}</strong><span>{business.city}, Chile</span></p>
-    <p>© {currentYear} {business.name}</p>
+    <div class="site-footer__legal">
+      <p>© 2026 {business.name}. Todos los derechos reservados.</p>
+      <!-- TODO: Conectar el crédito a una URL profesional confirmada. -->
+      <p>Diseño y desarrollo por <span>Gabriel Llanos Arzola</span></p>
+    </div>
   </div>
 </footer>
 
@@ -149,7 +152,8 @@ const contactChannels = [
   .site-footer__main {
     display: grid;
     gap: var(--space-8);
-    padding-block: clamp(var(--space-7), 8vw, var(--space-9));
+    padding-block-start: clamp(var(--space-7), 8vw, var(--space-9));
+    padding-block-end: clamp(var(--space-7), 5vw, var(--space-8));
   }
 
   .site-footer__contact,
@@ -227,14 +231,36 @@ const contactChannels = [
   }
 
   .contact-list__item a {
-    color: var(--color-white);
+    color: var(--color-accent-light);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  .payment-info {
+    display: grid;
+    max-width: 34rem;
+    gap: var(--space-2);
+    padding-block-start: var(--space-4);
+    border-top: 1px solid rgb(112 195 196 / 28%);
+  }
+
+  .payment-info h3 {
+    color: var(--color-white);
+    font-size: var(--font-size-base);
+  }
+
+  .payment-info p {
+    color: var(--color-accent-light);
+    font-size: var(--font-size-sm);
   }
 
   .contact-list__item a:hover,
   .contact-list__item a:focus-visible {
     color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   .contact-list__item:has(a:hover) .contact-list__icon,
@@ -353,6 +379,15 @@ const contactChannels = [
   .site-footer__bottom strong {
     color: var(--color-white);
     font-weight: var(--font-weight-semibold);
+  }
+
+  .site-footer__legal {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .site-footer__legal span {
+    color: var(--color-white);
   }
 
   @media (min-width: 48rem) {

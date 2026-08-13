@@ -10,6 +10,8 @@ interface Props {
   imageWidth?: number;
   imageHeight?: number;
   featured?: boolean;
+  ctaLabel?: string;
+  ctaUrl?: string;
 }
 
 const {
@@ -22,6 +24,8 @@ const {
   imageAlt = null,
   imageWidth,
   imageHeight,
+  ctaLabel,
+  ctaUrl,
 } = Astro.props;
 ---
 
@@ -48,6 +52,11 @@ const {
     <h3 class="product-card__title" id={`${id}-title`}>{name}</h3>
     {description && <p class="product-card__description">{description}</p>}
     {price !== null && <p class="product-card__price">{price}</p>}
+    {ctaLabel && ctaUrl && (
+      <a class="product-card__cta" href={ctaUrl} target="_blank" rel="noopener noreferrer">
+        {ctaLabel} <span aria-hidden="true">→</span>
+      </a>
+    )}
   </div>
 </article>
 
@@ -148,6 +157,14 @@ const {
     font-weight: var(--font-weight-semibold);
   }
 
+  .product-card__cta {
+    justify-self: start;
+    margin-block-start: var(--space-2);
+    color: var(--color-interactive);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .product-card:hover {
       border-color: var(--color-primary-dark);
@@ -157,7 +174,21 @@ const {
 
     .product-card:hover .product-card__image,
     .product-card:hover .product-image-placeholder {
-      transform: scale(1.025);
+      transform: translateY(-0.5rem) scale(1.03);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-card,
+    .product-card__image,
+    .product-image-placeholder {
+      transition-duration: 0.01ms;
+    }
+
+    .product-card:hover,
+    .product-card:hover .product-card__image,
+    .product-card:hover .product-image-placeholder {
+      transform: none;
     }
   }
 </style>
