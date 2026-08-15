@@ -35,7 +35,7 @@ productSections.forEach((section) => {
     window.clearTimeout(finishTimer);
 
     toggle.setAttribute('aria-expanded', String(isExpanded));
-    label.textContent = isExpanded ? 'Ver menos' : 'Ver más productos';
+    label.textContent = isExpanded ? 'Ver menos' : 'Ver más';
     icon.textContent = isExpanded ? '↑' : '↓';
 
     if (isExpanded) {

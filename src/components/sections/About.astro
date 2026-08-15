@@ -59,15 +59,18 @@ import BrandMoment from './BrandMoment.astro';
     width: min(100%, 18.75rem);
     aspect-ratio: 1;
     place-items: center;
+    padding: clamp(5px, 1.2vw, 20px);
     background-color: #b7804d;
-    border-radius: var(--radius-lg);
+    border-radius: 50%;
+    overflow: hidden;
   }
 
   .about__logo {
     display: block;
-    width: 95%;
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    transform: scale(1.14);
   }
 
   .about__copy {

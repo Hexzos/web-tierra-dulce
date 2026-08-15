@@ -1,32 +1,18 @@
-/**
- * DEVELOPMENT PLACEHOLDERS ONLY.
- * TODO: Reemplazar testimonios demo por reseñas reales de clientes de Tierra Dulce.
- * These entries intentionally contain no rating, testimonial, author, or source.
- */
 export const reviews = [
   {
-    id: 'review-placeholder-1',
-    rating: null,
-    text: 'Aquí se mostrará una review real de Tierra Dulce.',
-    author: null,
-    source: null,
-    developmentOnly: true,
+    id: 'instagram-review-1',
+    text: 'Hoy me he dado los mejores gustos reposteros.',
+    source: 'Vía Instagram',
   },
   {
-    id: 'review-placeholder-2',
-    rating: null,
-    text: 'Este espacio está preparado para un testimonio verificado.',
-    author: null,
-    source: null,
-    developmentOnly: true,
+    id: 'instagram-review-2',
+    text: 'Cada día más ricas, 1000 de 10. Ahora puedo seguir trabajando feliz.',
+    source: 'Vía Instagram',
   },
   {
-    id: 'review-placeholder-3',
-    rating: null,
-    text: 'Review pendiente de confirmación y atribución.',
-    author: null,
-    source: null,
-    developmentOnly: true,
+    id: 'instagram-review-3',
+    text: 'La mejor galleta Red Velvet de la vida.',
+    source: 'Vía Instagram',
   },
 ];
 

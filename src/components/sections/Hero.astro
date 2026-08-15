@@ -4,7 +4,9 @@
 
     <h1 class="hero__title" id="hero-title">Algo dulce siempre cae bien.</h1>
 
-    <p class="hero__supporting">Cookies, rollos de canela, queques, tortas y nuevos sabores preparados para cada antojo.</p>
+    <p class="hero__supporting">Cookies llenas de sabor, rollos de canela y nuevas delicias preparadas para cada antojo.</p>
+
+    <p class="hero__story">Desde 2024, creando momentos dulces en Villa Alemana.</p>
 
     <div class="hero__media">
       <img
@@ -51,6 +53,7 @@
       "eyebrow"
       "title"
       "supporting"
+      "story"
       "visual"
       "action";
     gap: 0;
@@ -87,6 +90,16 @@
     font-size: var(--font-size-lg);
   }
 
+  .hero__story {
+    grid-area: story;
+    max-width: 38ch;
+    margin-block-start: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
   .hero__media {
     grid-area: visual;
     width: 100%;
@@ -107,6 +120,7 @@
 
   .hero__action {
     grid-area: action;
+    justify-self: center;
     margin-block-start: var(--space-5);
   }
 
@@ -168,9 +182,10 @@
         "eyebrow visual"
         "title visual"
         "supporting visual"
+        "story visual"
         "action visual";
       grid-template-columns: minmax(0, 0.85fr) minmax(20rem, 1.15fr);
-      grid-template-rows: auto auto auto 1fr;
+      grid-template-rows: auto auto auto auto 1fr;
       column-gap: clamp(var(--space-6), 6vw, var(--space-9));
       align-items: start;
       padding-block: clamp(var(--space-7), 6vw, var(--space-9));
@@ -193,6 +208,7 @@
 
     .hero__action {
       align-self: end;
+      justify-self: start;
       margin-block-start: var(--space-6);
     }
 

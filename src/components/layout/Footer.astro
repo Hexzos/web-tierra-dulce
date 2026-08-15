@@ -86,7 +86,10 @@ const contactChannels = [
     </div>
 
     <div class="reviews" data-carousel data-autoplay-interval={reviewsCarouselConfig.autoplayInterval} data-reveal>
-      <h2 class="reviews__title">Lo que dicen de nosotros</h2>
+      <header class="reviews__header">
+        <h2 class="reviews__title">Lo que dicen de Tierra Dulce</h2>
+        <p class="reviews__subtitle">Palabras de quienes ya se dieron un gusto diferente.</p>
+      </header>
 
       <div class="reviews__viewport">
         {reviews.map((review, index) => (
@@ -284,8 +287,18 @@ const contactChannels = [
   }
 
   .reviews__title {
-    margin-block-end: var(--space-5);
     font-size: var(--font-size-xl);
+  }
+
+  .reviews__header {
+    display: grid;
+    gap: var(--space-2);
+    margin-block-end: var(--space-5);
+  }
+
+  .reviews__subtitle {
+    color: var(--color-accent-light);
+    font-size: var(--font-size-sm);
   }
 
   .reviews__viewport {
