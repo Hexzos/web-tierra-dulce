@@ -1,18 +1,18 @@
 ---
-import { business } from '../../data/business.js';
+const { isCatalog = false } = Astro.props;
 
 const navigationItems = [
-  { label: 'Inicio', href: '#inicio' },
-  { label: 'Productos', href: '#productos' },
-  { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Visítanos', href: '#visitanos' },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Inicio', href: isCatalog ? '/' : '#inicio' },
+  { label: 'Productos', href: isCatalog ? '/productos/' : '#productos' },
+  { label: 'Nosotros', href: isCatalog ? '/#nosotros' : '#nosotros' },
+  { label: 'Visítanos', href: isCatalog ? '/#visitanos' : '#visitanos' },
+  { label: 'Contacto', href: isCatalog ? '/#contacto' : '#contacto' },
 ];
 ---
 
 <header class="site-header" data-navbar>
   <nav class="navbar container" aria-label="Navegación principal">
-    <a class="navbar__brand" href="#inicio" aria-label="Tierra Dulce — Inicio">
+    <a class="navbar__brand" href={isCatalog ? '/' : '#inicio'} aria-label="Tierra Dulce — Inicio">
       <img
         class="navbar__logo-image"
         src="/images/brand/logotipo_tierradulce_nv.png"
@@ -43,10 +43,10 @@ const navigationItems = [
         {navigationItems.map((item) => (
           <li>
             <a
-              class:list={['navbar__link', { active: item.href === '#inicio' }]}
+              class:list={['navbar__link', { active: isCatalog ? item.href === '/productos/' : item.href === '#inicio' }]}
               href={item.href}
               data-label={item.label}
-              aria-current={item.href === '#inicio' ? 'location' : undefined}
+              aria-current={(isCatalog ? item.href === '/productos/' : item.href === '#inicio') ? 'page' : undefined}
             >
               <span>{item.label}</span>
             </a>
@@ -54,16 +54,8 @@ const navigationItems = [
         ))}
       </ul>
 
-      <a
-        class="navbar__cta"
-        href={`https://wa.me/${business.whatsapp.replace(/\D/g, '')}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Contactar a Tierra Dulce por WhatsApp (abre en una pestaña nueva)"
-      >
-        <span class="navbar__cta-label navbar__cta-label--desktop">WhatsApp</span>
-        <span class="navbar__cta-label navbar__cta-label--mobile">Contactar por WhatsApp</span>
-      </a>
+      <button class="navbar__order" type="button" aria-expanded="false" aria-controls="order-panel" data-order-open>Mis pedidos <span class="navbar__order-separator" aria-hidden="true">·</span> <span class="navbar__order-count" data-order-count>0</span></button>
+
     </div>
   </nav>
 </header>
@@ -201,13 +193,17 @@ const navigationItems = [
     gap: 0;
   }
 
-  .navbar__link,
-  .navbar__cta {
+  .navbar__link {
     display: flex;
     min-height: 2.75rem;
     align-items: center;
     text-decoration: none;
   }
+
+  .navbar__order { display:flex; min-height:2.75rem; align-items:center; justify-content:center; gap:var(--space-1); padding-inline:var(--space-4); color:var(--color-navbar-text); background:rgb(255 255 255 / 34%); border:1px solid rgb(16 36 35 / 22%); border-radius:var(--radius-pill); font-weight:var(--font-weight-semibold); cursor:pointer; }
+  .navbar__order-count { display:inline-grid; min-width:1.5rem; min-height:1.5rem; place-items:center; padding-inline:.3rem; color:var(--color-ink); background:var(--color-white); border-radius:var(--radius-pill); font-size:var(--font-size-xs); transition:background-color 200ms ease,color 200ms ease; }
+  .navbar__order-count[data-active] { color:var(--color-white); background:var(--color-contrast); }
+  .navbar__order:hover,.navbar__order:focus-visible { color:var(--color-navbar-interactive); background:rgb(255 255 255 / 55%); }
 
   .navbar__link {
     position: relative;
@@ -265,34 +261,6 @@ const navigationItems = [
     transform: scaleX(1);
   }
 
-  .navbar__cta {
-    justify-content: center;
-    padding-inline: var(--space-5);
-    color: var(--color-white);
-    background: var(--color-navbar-cta);
-    border: 1px solid var(--color-navbar-cta);
-    border-radius: var(--radius-pill);
-    font-size: var(--navbar-font-size);
-    font-weight: var(--font-weight-semibold);
-    transition:
-      background-color var(--transition-fast),
-      transform var(--transition-fast);
-  }
-
-  .navbar__cta-label--desktop {
-    display: none;
-  }
-
-  .navbar__cta:hover,
-  .navbar__cta:active {
-    color: var(--color-white);
-    background: var(--color-ink);
-  }
-
-  .navbar__cta:active {
-    transform: scale(0.98);
-  }
-
   @media (min-width: 64rem) {
     .navbar__logo-image {
       max-width: var(--navbar-logo-max-width-desktop);
@@ -310,7 +278,7 @@ const navigationItems = [
       flex: 1;
       align-items: center;
       justify-content: flex-end;
-      gap: clamp(var(--space-5), 3vw, var(--space-6));
+      gap: clamp(var(--space-4), 2vw, var(--space-5));
       padding: 0;
       background: transparent;
       border: 0;
@@ -337,17 +305,6 @@ const navigationItems = [
       font-size: var(--navbar-font-size);
     }
 
-    .navbar__cta {
-      min-height: 2.625rem;
-    }
-
-    .navbar__cta-label--desktop {
-      display: inline;
-    }
-
-    .navbar__cta-label--mobile {
-      display: none;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

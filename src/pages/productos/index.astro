@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/layout/Navbar.astro';
+import Footer from '../../components/layout/Footer.astro';
+import OrderPanel from '../../components/layout/OrderPanel.astro';
+import WhatsAppButton from '../../components/layout/WhatsAppButton.astro';
+import ProductCard from '../../components/ui/ProductCard.astro';
+import { products } from '../../data/products.js';
+---
+<BaseLayout title="Productos | Tierra Dulce Villa Alemana" description="Descubre las cookies, rollos de canela y variedades de Tierra Dulce en Villa Alemana. Arma tu pedido y consulta disponibilidad por WhatsApp.">
+  <Navbar isCatalog />
+  <main id="main-content">
+    <section class="catalog section" id="catalogo" aria-labelledby="catalog-title" data-catalog>
+      <div class="container">
+        <header class="catalog__header" data-reveal><p class="catalog__eyebrow">Nuestros productos</p><h1 id="catalog-title">Encuentra tu próximo antojo.</h1><p>Explora nuestras cookies, rollos de canela y las variedades que vamos sumando a Tierra Dulce.</p></header>
+        <div class="catalog__filters" aria-label="Filtrar productos" data-reveal>
+          <button type="button" data-filter="todos" aria-pressed="true">Todos</button><button type="button" data-filter="cookies" aria-pressed="false">Cookies</button><button type="button" data-filter="rollos" aria-pressed="false">Rollos de Canela</button>
+        </div>
+        <p class="visually-hidden" aria-live="polite" data-filter-status></p>
+        <ul class="catalog__grid" role="list" data-reveal>{products.map((product)=><li data-catalog-item data-category={product.category}><ProductCard {...product} orderable /></li>)}</ul>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <OrderPanel isCatalog />
+  <WhatsAppButton />
+</BaseLayout>
+<script>
+  const catalog = document.querySelector('[data-catalog]');
+  if (catalog) {
+    const buttons = catalog.querySelectorAll('[data-filter]'); const items = catalog.querySelectorAll('[data-catalog-item]'); const status = catalog.querySelector('[data-filter-status]');
+    const allowed = ['cookies','rollos'];
+    const applyFilter = (requested, updateUrl = false) => {
+      const filter = allowed.includes(requested) ? requested : 'todos'; let visible = 0;
+      buttons.forEach((button)=>button.setAttribute('aria-pressed',String(button.getAttribute('data-filter')===filter)));
+      items.forEach((item)=>{ const show=filter==='todos'||item.getAttribute('data-category')===filter; item.toggleAttribute('hidden',!show); if(show)visible++; });
+      if(status) status.textContent=`${visible} productos visibles`;
+      if(updateUrl){ const url=filter==='todos'?'/productos/':`/productos/?categoria=${filter}`; history.pushState({filter},'',url); }
+    };
+    buttons.forEach((button)=>button.addEventListener('click',()=>applyFilter(button.getAttribute('data-filter')??'todos',true)));
+    const fromUrl=()=>applyFilter(new URLSearchParams(location.search).get('categoria')??'todos'); fromUrl(); window.addEventListener('popstate',fromUrl);
+  }
+</script>
+<style>
+  .catalog{align-items:start;background:var(--color-background)}.catalog__header{max-width:46rem}.catalog__eyebrow{margin-block-end:var(--space-3);color:var(--color-primary-dark);font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);letter-spacing:var(--letter-spacing-wide);text-transform:uppercase}.catalog__header p:last-child{margin-block-start:var(--space-3);color:var(--color-text-muted)}
+  .catalog__filters{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-block:clamp(var(--space-6),5vw,var(--space-8)) var(--space-6)}.catalog__filters button{min-height:2.75rem;padding:.6rem var(--space-5);color:var(--color-contrast);background:var(--color-white);border:1px solid var(--color-border);border-radius:var(--radius-pill);font-weight:var(--font-weight-semibold);cursor:pointer}.catalog__filters button[aria-pressed="true"]{color:var(--color-white);background:var(--color-contrast);border-color:var(--color-contrast)}.catalog__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-5)}.catalog__grid>li[hidden]{display:none}
+  @media(min-width:48rem){.catalog__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6)}}@media(min-width:64rem){.catalog__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:24rem){.catalog__filters{gap:var(--space-2)}.catalog__filters button{padding-inline:var(--space-4);font-size:var(--font-size-sm)}}
+</style>

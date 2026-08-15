@@ -231,10 +231,20 @@ navbars.forEach((navbar) => {
   });
 
   document.addEventListener('click', (event) => {
-    if (event.target instanceof Node && !navbar.contains(event.target)) closeMenu();
+    if (!(event.target instanceof Node)) return;
+    const clickedOrdersLayer =
+      event.target instanceof Element &&
+      event.target.closest('[data-order-panel], [data-order-backdrop]');
+
+    if (clickedOrdersLayer) return;
+    if (!navbar.contains(event.target)) closeMenu();
   });
 
   document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && document.querySelector('[data-order-panel][data-open]')) {
+      return;
+    }
+
     if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
       closeMenu({ returnFocus: true });
     }

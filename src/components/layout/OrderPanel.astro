@@ -1,0 +1,54 @@
+---
+const { isCatalog = false } = Astro.props;
+---
+<div class="order-backdrop" data-order-backdrop hidden></div>
+<aside class="order-panel" id="order-panel" role="dialog" aria-modal="true" aria-labelledby="order-title" aria-hidden="true" data-order-panel data-is-catalog={String(isCatalog)}>
+  <header class="order-panel__header">
+    <h2 id="order-title">Mis pedidos</h2>
+    <button type="button" aria-label="Cerrar Mis pedidos" data-order-close>×</button>
+  </header>
+  <div class="order-panel__body">
+    <div class="order-empty" data-order-empty>
+      <p>Todavía no has agregado productos.</p>
+      <p>Explora nuestro catálogo y arma tu pedido con tus favoritos.</p>
+      <a href={isCatalog ? '#catalogo' : '/productos/'} data-empty-action>Ver productos →</a>
+    </div>
+    <div class="order-filled" data-order-filled hidden>
+      <div class="order-groups" data-order-groups></div>
+      <p class="order-summary">
+        <span>Tu pedido:</span>
+        <strong data-order-summary-total></strong>
+      </p>
+      <div class="order-panel__notice">
+        <p>Al enviar tu pedido, abriremos WhatsApp con este listado para que Tierra Dulce confirme disponibilidad y continúe contigo.</p>
+        <small>No se realizan pagos desde este sitio.</small>
+      </div>
+      <a class="order-whatsapp" href="#" target="_blank" rel="noopener noreferrer" data-action="order_whatsapp_inquiry" data-order-whatsapp>Consultar productos por WhatsApp</a>
+    </div>
+  </div>
+</aside>
+<script src="../../scripts/order.js"></script>
+<style>
+  .order-backdrop{position:fixed;z-index:29;inset:0;background:rgb(16 36 35 / 46%)}
+  .order-panel{position:fixed;z-index:30;right:0;bottom:0;display:flex;width:100%;max-height:min(90vh,48rem);flex-direction:column;background:var(--color-white);border-radius:var(--radius-lg) var(--radius-lg) 0 0;box-shadow:var(--shadow-soft);transform:translateY(105%);visibility:hidden;transition:transform var(--transition-base),visibility 0s linear var(--transition-base)}
+  .order-panel[data-open]{transform:none;visibility:visible;transition-delay:0s}.order-panel__header{display:flex;align-items:center;justify-content:space-between;padding:var(--space-5);border-bottom:1px solid var(--color-border)}.order-panel__header h2{font-size:var(--font-size-xl)}.order-panel__header button{width:2.75rem;height:2.75rem;background:transparent;border-radius:50%;font-size:1.75rem;cursor:pointer}.order-panel__body{padding:var(--space-5);overflow-y:auto}
+  .order-empty{display:grid;gap:var(--space-3)}.order-empty[hidden],.order-filled[hidden]{display:none}.order-empty p:last-of-type{color:var(--color-text-muted);font-size:var(--font-size-sm)}.order-empty a{justify-self:start;color:var(--color-interactive);font-weight:var(--font-weight-semibold)}
+  .order-groups{display:grid;gap:0}
+  .order-panel :global(.order-group){display:grid;gap:var(--space-2)}
+  .order-panel :global(.order-group + .order-group){margin-block-start:var(--space-4);padding-block-start:var(--space-4);border-top:1px solid var(--color-border)}
+  .order-panel :global(.order-group__title){color:var(--color-ink);font-size:var(--font-size-base);font-weight:var(--font-weight-bold)}
+  .order-panel :global(.order-list){display:grid;gap:var(--space-4)}
+  .order-panel :global(.order-line){display:grid;gap:var(--space-2)}
+  .order-panel :global(.order-line strong){font-size:.9rem;font-weight:var(--font-weight-semibold)}
+  .order-panel :global(.order-line__actions){display:flex;width:100%;min-width:0;align-items:center;justify-content:space-between;gap:var(--space-2)}
+  .order-panel :global(.order-line__controls){display:grid;flex:0 0 auto;grid-template-columns:2.125rem 1.75rem 2.125rem;align-items:center;overflow:hidden;background:var(--color-white);border:1px solid var(--color-border);border-radius:var(--radius-pill)}
+  .order-panel :global(.order-line__controls button){min-width:2.125rem;min-height:2.375rem;padding:0;color:var(--color-ink);background:transparent;border:0;appearance:none;cursor:pointer;font:inherit;font-size:var(--font-size-base)}
+  .order-panel :global(.order-line__controls span){display:block;min-width:1.75rem;text-align:center;font-size:.9rem;font-weight:var(--font-weight-semibold);font-variant-numeric:tabular-nums}
+  .order-panel :global(.order-line__controls button:hover){color:var(--color-primary-dark);background:rgb(112 195 196 / 12%)}
+  .order-panel :global(.order-line__remove){min-height:2.375rem;padding:.375rem var(--space-3);color:var(--color-interactive);background:transparent;border:1px solid var(--color-accent-warm);border-radius:var(--radius-pill);appearance:none;font:inherit;font-size:.85rem;font-weight:var(--font-weight-semibold);cursor:pointer}
+  .order-panel :global(.order-line__remove:hover){color:var(--color-ink);background:rgb(112 195 196 / 14%);border-color:var(--color-primary-dark)}
+  .order-summary{display:flex;width:100%;align-items:center;justify-content:space-between;gap:var(--space-4);margin-block-start:var(--space-4);padding-block-start:var(--space-4);border-top:1px solid var(--color-border);font-size:var(--font-size-base);font-weight:var(--font-weight-bold)}.order-summary strong{font-weight:var(--font-weight-bold);text-align:right}.order-panel__notice{display:grid;gap:var(--space-2);margin-block:var(--space-4) var(--space-5);padding:var(--space-4);background:rgb(112 195 196 / 14%);border-radius:var(--radius-md);font-size:var(--font-size-sm)}.order-panel__notice small{color:var(--color-text-muted)}.order-whatsapp{display:flex;min-height:3rem;align-items:center;justify-content:center;padding:var(--space-3);color:var(--color-white);background:var(--color-contrast);border-radius:var(--radius-pill);font-weight:var(--font-weight-semibold);text-decoration:none}.order-whatsapp:hover{color:var(--color-white);background:var(--color-ink)}
+  @media(max-width:22.5rem){.order-panel__body,.order-panel__header{padding-inline:var(--space-4)}.order-panel :global(.order-line__actions){gap:var(--space-2)}.order-panel :global(.order-line__remove){padding-inline:var(--space-3)}}
+  @media(min-width:64rem){.order-panel{top:0;bottom:0;width:min(28rem,100%);max-height:none;border-radius:0;transform:translateX(105%)}.order-panel[data-open]{transform:none}}
+  @media(prefers-reduced-motion:reduce){.order-panel{transition-duration:.01ms}}
+</style>
