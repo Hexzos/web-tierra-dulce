@@ -139,12 +139,15 @@
     text-decoration: none;
     transition:
       background-color var(--transition-fast),
+      color var(--transition-fast),
       transform var(--transition-fast);
   }
 
   .hero__cta:hover,
+  .hero__cta:focus-visible,
   .hero__cta:active {
-    background: var(--color-primary-soft);
+    color: var(--color-white);
+    background: var(--color-primary-dark);
   }
 
   .hero__cta:active {
