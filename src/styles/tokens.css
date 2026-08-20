@@ -39,14 +39,12 @@
   --color-navbar-text: var(--color-ink);
   --color-navbar-interactive: var(--color-contrast);
   --color-navbar-cta: var(--color-contrast);
-  --navbar-height-mobile: 4.75rem;
-  --navbar-height-desktop: 5.5rem;
-  --navbar-logo-height-mobile: 3.5rem;
-  --navbar-logo-height-desktop: 4.5rem;
-  --navbar-logo-max-width-small: 10.3125rem;
-  --navbar-logo-max-width-mobile: 11.5625rem;
-  --navbar-logo-max-width-desktop: 16.25rem;
-  --navbar-font-size: 1rem;
+  --navbar-height-mobile: 5.25rem;
+  --navbar-height-desktop: 6.25rem;
+  --navbar-logo-max-width-small: 7.3125rem;
+  --navbar-logo-max-width-mobile: 7.3125rem;
+  --navbar-logo-max-width-desktop: 8.8125rem;
+  --navbar-font-size: 1.0625rem;
   --navbar-link-gap: 2rem;
 
   /* Typography */

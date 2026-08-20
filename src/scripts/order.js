@@ -4,7 +4,6 @@ const STORAGE_KEY = 'tierra-dulce-order-v1';
 const MAX_QUANTITY = 20;
 const categoryOrder = ['cookies', 'rollos'];
 const categoryLabels = { cookies: 'Cookies', rollos: 'Rollos de canela', novedades: 'Novedades' };
-const categoryIcons = { cookies: '🍪', rollos: '🥐' };
 const productCategories = new Map(products.map((product) => [product.id, product.category]));
 const toSentenceCase = (value) => {
   const label = value.replaceAll('-', ' ').trim();
@@ -26,6 +25,7 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
   const openButtons = document.querySelectorAll('[data-order-open]');
   const countNodes = document.querySelectorAll('[data-order-count]');
   let lastTrigger = null;
+  let closeTimer = null;
   let order = [];
 
   const load = () => {
@@ -60,13 +60,12 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
   };
   const buildOrderInquiryMessage = () => {
     const sections = groupedOrder().map(([category, items]) => {
-      const icon = categoryIcons[category] ?? '✨';
       const label = toSentenceCase(categoryLabels[category] ?? category);
       const lines = items.map((item) => `• ${item.name} × ${item.quantity}`).join('\n');
-      return `${icon} ${label}\n${lines}`;
+      return `${label}\n${lines}`;
     }).join('\n\n');
     const units = total();
-    return `Hola 👋 Vi los productos de su página web y quisiera consultar por:\n\n${sections}\n\nTotal: ${units} ${units === 1 ? 'producto' : 'productos'}\n\n¿Podrían confirmarme la disponibilidad y los precios de estos productos?\n\nQuedo atento/a al valor total y a los medios de pago disponibles. 😊`;
+    return `Hola, vi los productos de su página web y quisiera consultar por:\n\n${sections}\n\nTotal: ${units} ${units === 1 ? 'producto' : 'productos'}\n\n¿Podrían confirmarme la disponibilidad y los precios de estos productos?\n\nQuedo atento/a al valor total y a los medios de pago disponibles.`;
   };
 
   const createLine = (item) => {
@@ -107,16 +106,26 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
   };
 
   const open = (trigger) => {
-    lastTrigger = trigger; panel.setAttribute('data-open', ''); panel.setAttribute('aria-hidden', 'false');
-    if (backdrop instanceof HTMLElement) backdrop.hidden = false;
+    if (closeTimer) window.clearTimeout(closeTimer);
+    lastTrigger = trigger; panel.removeAttribute('data-closing'); panel.setAttribute('data-open', ''); panel.setAttribute('aria-hidden', 'false');
+    if (backdrop instanceof HTMLElement) { backdrop.hidden = false; backdrop.getBoundingClientRect(); backdrop.setAttribute('data-open', ''); }
     openButtons.forEach((button) => button.setAttribute('aria-expanded', 'true'));
     document.body.style.overflow = 'hidden'; panel.querySelector('[data-order-close]')?.focus();
   };
   const closeOrdersPanel = () => {
-    panel.removeAttribute('data-open'); panel.setAttribute('aria-hidden', 'true');
-    if (backdrop instanceof HTMLElement) backdrop.hidden = true;
+    if (!panel.hasAttribute('data-open')) return;
+    panel.setAttribute('data-closing', ''); panel.removeAttribute('data-open'); panel.setAttribute('aria-hidden', 'true');
+    if (backdrop instanceof HTMLElement) backdrop.removeAttribute('data-open');
     openButtons.forEach((button) => button.setAttribute('aria-expanded', 'false'));
-    document.body.style.overflow = ''; if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+    if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+    const finishClose = () => {
+      if (!panel.hasAttribute('data-closing')) return;
+      panel.removeAttribute('data-closing');
+      if (backdrop instanceof HTMLElement) backdrop.hidden = true;
+      document.body.style.overflow = '';
+    };
+    panel.addEventListener('transitionend', finishClose, { once: true });
+    closeTimer = window.setTimeout(finishClose, 650);
   };
 
   openButtons.forEach((button) => button.addEventListener('click', () => open(button)));
@@ -156,7 +165,7 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
   whatsapp?.addEventListener('click', (event) => {
     if (whatsapp instanceof HTMLAnchorElement) {
       event.preventDefault();
-      const url = `https://wa.me/56941354438?text=${encodeURIComponent(buildOrderInquiryMessage())}`;
+      const url = `https://wa.me/56997293650?text=${encodeURIComponent(buildOrderInquiryMessage())}`;
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   });
