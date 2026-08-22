@@ -1,0 +1,4 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';import CategoryForm from '../../../../components/admin/CategoryForm.astro';import{getDevelopmentProfiles}from'../../../../lib/admin/adminData.js';const profiles=getDevelopmentProfiles();
+---
+<AdminLayout title="Nueva categoría" currentPath="/admin/categorias/nueva/" profiles={profiles}><section class="admin-product-editor"><header class="admin-page-header"><div><p class="admin-eyebrow">Categorías</p><h1>Nueva categoría</h1></div></header><CategoryForm /></section><script src="../../../../scripts/admin-category-form.js"></script></AdminLayout>

@@ -5,7 +5,9 @@ import Footer from '../../components/layout/Footer.astro';
 import OrderPanel from '../../components/layout/OrderPanel.astro';
 import WhatsAppButton from '../../components/layout/WhatsAppButton.astro';
 import ProductCard from '../../components/ui/ProductCard.astro';
-import { products } from '../../data/products.js';
+import { getPublicCategories, getPublicProducts } from '../../lib/catalog.js';
+const products = getPublicProducts();
+const categories = getPublicCategories();
 ---
 <BaseLayout title="Productos | Tierra Dulce Villa Alemana" description="Descubre las cookies, rollos de canela y variedades de Tierra Dulce en Villa Alemana. Arma tu pedido y consulta disponibilidad por WhatsApp.">
   <Navbar isCatalog />
@@ -14,7 +16,7 @@ import { products } from '../../data/products.js';
       <div class="container">
         <header class="catalog__header" data-reveal><p class="catalog__eyebrow">Nuestros productos</p><h1 id="catalog-title">Encuentra tu próximo antojo.</h1><p>Explora nuestras cookies, rollos de canela y las variedades que vamos sumando a Tierra Dulce.</p></header>
         <div class="catalog__filters" aria-label="Filtrar productos" data-reveal>
-          <button type="button" data-filter="todos" aria-pressed="true">Todos</button><button type="button" data-filter="cookies" aria-pressed="false">Cookies</button><button type="button" data-filter="rollos" aria-pressed="false">Rollos de Canela</button>
+          <button type="button" data-filter="todos" aria-pressed="true">Todos</button>{categories.map((category) => <button type="button" data-filter={category.slug} aria-pressed="false">{category.name}</button>)}
         </div>
         <p class="visually-hidden" aria-live="polite" data-filter-status></p>
         <ul class="catalog__grid" role="list" data-reveal>{products.map((product)=><li data-catalog-item data-category={product.category}><ProductCard {...product} orderable /></li>)}</ul>
@@ -22,14 +24,14 @@ import { products } from '../../data/products.js';
     </section>
   </main>
   <Footer />
-  <OrderPanel isCatalog />
+  <OrderPanel isCatalog products={products} />
   <WhatsAppButton />
 </BaseLayout>
 <script>
   const catalog = document.querySelector('[data-catalog]');
   if (catalog) {
     const buttons = catalog.querySelectorAll('[data-filter]'); const items = catalog.querySelectorAll('[data-catalog-item]'); const status = catalog.querySelector('[data-filter-status]');
-    const allowed = ['cookies','rollos'];
+    const allowed = [...buttons].map((button) => button.getAttribute('data-filter')).filter((filter) => filter && filter !== 'todos');
     const applyFilter = (requested, updateUrl = false) => {
       const filter = allowed.includes(requested) ? requested : 'todos'; let visible = 0;
       buttons.forEach((button)=>button.setAttribute('aria-pressed',String(button.getAttribute('data-filter')===filter)));

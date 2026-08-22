@@ -1,0 +1,50 @@
+---
+import AdminPageLayout from './AdminPageLayout.astro';
+
+const { title, currentPath = '/admin/', profiles = [] } = Astro.props;
+const sessionProfiles = profiles.map(({ id, username, displayName, role, publishingMode, isActive }) => ({ id, username, displayName, role, publishingMode, isActive }));
+---
+<AdminPageLayout title={`${title} | Tierra Dulce Admin`}>
+  <!-- DEV ONLY · NOT SECURITY · REMOVE WHEN AUTH IS IMPLEMENTED -->
+  <div class="admin-app" data-admin-app data-admin-page="protected" hidden>
+    <header class="admin-header">
+      <a class="admin-brand" href="/admin/" aria-label="Tierra Dulce Admin — Inicio">
+        <img src="/images/brand/logotipo_tierradulce_nv.png" alt="Tierra Dulce" width="1536" height="1024" />
+        <span>Admin</span>
+      </a>
+      <button class="admin-menu-button" type="button" aria-expanded="false" aria-controls="admin-navigation" data-admin-menu>
+        <span aria-hidden="true">☰</span><span>Menú</span>
+      </button>
+      <div class="admin-header-user" aria-label="Sesión administrativa de desarrollo">
+        <span data-admin-user-name></span>
+        <small data-admin-user-role></small>
+      </div>
+    </header>
+
+    <aside class="admin-sidebar" id="admin-navigation" data-admin-nav>
+      <nav aria-label="Navegación administrativa">
+        <p class="admin-nav-label">Administración</p>
+        <ul role="list">
+          <li><a class:list={['admin-nav-link', { active: currentPath === '/admin/' }]} href="/admin/" aria-current={currentPath === '/admin/' ? 'page' : undefined}>Inicio</a></li>
+          <li><a class:list={['admin-nav-link', { active: currentPath.startsWith('/admin/productos/') }]} href="/admin/productos/" aria-current={currentPath.startsWith('/admin/productos/') ? 'page' : undefined}>Productos</a></li>
+          <li><a class:list={['admin-nav-link', { active: currentPath.startsWith('/admin/categorias/') }]} href="/admin/categorias/">Categorías</a></li>
+          <li data-developer-admin-only><a class:list={['admin-nav-link', { active: currentPath.startsWith('/admin/usuarios/') }]} href="/admin/usuarios/">Usuarios</a></li>
+          <li data-developer-admin-only><a class:list={['admin-nav-link', { active: currentPath.startsWith('/admin/revisiones/') }]} href="/admin/revisiones/">Revisiones</a></li>
+          <li><a class:list={['admin-nav-link', { active: currentPath.startsWith('/admin/historial/') }]} href="/admin/historial/">Historial</a></li>
+        </ul>
+        <p class="admin-nav-note">DEV ONLY · Sesión local sin autenticación real.</p>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <a href="/" target="_blank" rel="noopener noreferrer">Ver sitio público <span aria-hidden="true">↗</span></a>
+        <button type="button" data-admin-logout>Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="admin-main" id="admin-main">
+      <slot />
+    </main>
+  </div>
+  <noscript><p class="admin-script-required">Este prototipo administrativo necesita JavaScript para validar la sesión local.</p></noscript>
+  <script type="application/json" data-admin-profiles set:html={JSON.stringify(sessionProfiles).replaceAll('<', '\\u003c')}></script>
+  <script src="../scripts/admin-session.js"></script>
+</AdminPageLayout>

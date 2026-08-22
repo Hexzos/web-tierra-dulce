@@ -1,6 +1,7 @@
 ---
 import ProductCard from '../ui/ProductCard.astro';
-import { landingCategories } from '../../data/products.js';
+import { getLandingCategories } from '../../lib/catalog.js';
+const landingCategories = getLandingCategories();
 ---
 
 <section class="products section" id="productos" aria-labelledby="products-title" data-products>

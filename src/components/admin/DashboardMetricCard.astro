@@ -1,0 +1,7 @@
+---
+const { label, value, tone = 'default', metric } = Astro.props;
+---
+<article class:list={['admin-metric', `admin-metric--${tone}`]}>
+  <p>{label}</p>
+  <strong data-admin-stat={metric}>{value}</strong>
+</article>

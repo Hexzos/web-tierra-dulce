@@ -1,0 +1,14 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+import ProductForm from '../../../../components/admin/ProductForm.astro';
+import { getDevelopmentProfiles } from '../../../../lib/admin/adminData.js';
+const profiles = getDevelopmentProfiles();
+---
+<AdminLayout title="Nuevo producto" currentPath="/admin/productos/nuevo/" profiles={profiles}>
+  <section class="admin-product-editor" aria-labelledby="product-editor-title">
+    <header class="admin-page-header"><div><p class="admin-eyebrow">Productos</p><h1 id="product-editor-title">Nuevo producto</h1><p>La imagen se incorporará en un hito posterior.</p></div></header>
+    <div class="admin-build-notice" role="note">Crear el producto modifica SQLite, pero no reconstruye el sitio público automáticamente.</div>
+    <ProductForm mode="create" />
+  </section>
+  <script src="../../../../scripts/admin-product-form.js"></script>
+</AdminLayout>

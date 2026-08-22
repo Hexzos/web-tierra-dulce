@@ -1,0 +1,14 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+import ProductForm from '../../../../components/admin/ProductForm.astro';
+import { getDevelopmentProfiles } from '../../../../lib/admin/adminData.js';
+const profiles = getDevelopmentProfiles();
+---
+<AdminLayout title="Editar producto" currentPath="/admin/productos/editar/" profiles={profiles}>
+  <section class="admin-product-editor" aria-labelledby="product-editor-title">
+    <header class="admin-page-header"><div><p class="admin-eyebrow">Productos</p><h1 id="product-editor-title">Editar producto</h1><p data-editor-subtitle>Cargando datos desde la API local…</p></div></header>
+    <div class="admin-build-notice" role="note">Editar SQLite no modifica <code>dist/</code>. Ejecuta un build manual para publicar cambios aplicables.</div>
+    <ProductForm mode="edit" />
+  </section>
+  <script src="../../../../scripts/admin-product-form.js"></script>
+</AdminLayout>

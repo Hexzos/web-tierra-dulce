@@ -1,0 +1,50 @@
+---
+import AdminPageLayout from '../../layouts/AdminPageLayout.astro';
+import { getDevelopmentProfiles } from '../../lib/admin/adminData.js';
+
+const profiles = getDevelopmentProfiles();
+const sessionProfiles = profiles.map(({ id, username, displayName, role, publishingMode, isActive }) => ({ id, username, displayName, role, publishingMode, isActive }));
+---
+<AdminPageLayout title="Acceso local | Tierra Dulce Admin">
+  <!-- DEV ONLY · NOT SECURITY · REMOVE WHEN AUTH IS IMPLEMENTED -->
+  <main class="admin-login" data-admin-page="login" hidden>
+    <section class="admin-login-card" aria-labelledby="login-title">
+      <a class="admin-login-brand" href="/" aria-label="Volver al sitio de Tierra Dulce">
+        <img src="/images/brand/logotipo_tierradulce_nv.png" alt="Tierra Dulce" width="1536" height="1024" />
+        <span>Administración local</span>
+      </a>
+      <div class="admin-login-heading">
+        <p class="admin-eyebrow">Acceso de desarrollo</p>
+        <h1 id="login-title">Inicia una sesión provisional</h1>
+        <p>Selecciona un perfil ficticio para revisar la experiencia administrativa.</p>
+      </div>
+      <div class="admin-notice admin-notice--compact" role="note">
+        <strong>No es seguridad de producción</strong>
+        <p>No uses credenciales personales ni reales.</p>
+      </div>
+      <form class="admin-login-form" data-admin-login-form novalidate>
+        <div class="admin-field">
+          <label for="admin-username">Usuario</label>
+          <select id="admin-username" name="username" required autocomplete="username" aria-describedby="username-help">
+            <option value="">Selecciona un perfil</option>
+            {profiles.map((profile) => <option value={profile.username}>{profile.username} — {profile.displayName}</option>)}
+          </select>
+          <small id="username-help">Perfiles ficticios cargados desde SQLite.</small>
+        </div>
+        <div class="admin-field">
+          <label for="admin-password">Frase de acceso demo</label>
+          <input id="admin-password" name="password" type="password" required autocomplete="current-password" aria-describedby="password-help" />
+          <small id="password-help">Para este prototipo local utiliza <code>demo</code>.</small>
+        </div>
+        <p class="admin-form-error" id="admin-login-error" role="alert" aria-live="polite" hidden></p>
+        <button class="admin-login-submit" type="submit" data-admin-login-submit>
+          <span data-submit-label>Entrar al panel</span><span class="admin-spinner" data-submit-spinner hidden aria-hidden="true"></span>
+        </button>
+      </form>
+      <a class="admin-back-link" href="/">← Volver al sitio público</a>
+    </section>
+  </main>
+  <noscript><p class="admin-script-required">Este prototipo administrativo necesita JavaScript para iniciar la sesión local.</p></noscript>
+  <script type="application/json" data-admin-profiles set:html={JSON.stringify(sessionProfiles).replaceAll('<', '\\u003c')}></script>
+  <script src="../../scripts/admin-session.js"></script>
+</AdminPageLayout>

@@ -1,0 +1,23 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { getDevelopmentProfiles } from '../../../lib/admin/adminData.js';
+const profiles = getDevelopmentProfiles();
+---
+<AdminLayout title="Productos" currentPath="/admin/productos/" profiles={profiles}>
+  <section class="admin-products" aria-labelledby="products-admin-title" data-admin-products>
+    <header class="admin-page-header">
+      <div><p class="admin-eyebrow">Catálogo</p><h1 id="products-admin-title">Productos</h1><p>Consulta y administra los productos de la base local.</p></div>
+      <a class="admin-primary-action" href="/admin/productos/nuevo/" data-write-action>Nuevo producto</a>
+    </header>
+    <div class="admin-build-notice" role="note"><strong>Publicación manual:</strong> los cambios en SQLite aparecerán en el sitio público después de ejecutar un nuevo <code>npm run build</code>.</div>
+    <div class="admin-readonly-notice" data-readonly-notice hidden>Tu perfil Editor tiene acceso de solo lectura durante este hito.</div>
+    <div class="admin-product-tools">
+      <div class="admin-field"><label for="product-search">Buscar</label><input id="product-search" type="search" placeholder="Nombre o slug" data-product-search /></div>
+      <div class="admin-field"><label for="status-filter">Estado</label><select id="status-filter" data-status-filter><option value="">Todos</option><option value="published">Publicado</option><option value="sold_out">Agotado</option><option value="draft">Borrador</option><option value="hidden">Oculto</option><option value="archived">Archivado</option></select></div>
+      <div class="admin-field"><label for="category-filter">Categoría</label><select id="category-filter" data-category-filter><option value="">Todas</option><option value="uncategorized">Sin categoría</option></select></div>
+    </div>
+    <p class="admin-results-status" data-products-status role="status" aria-live="polite">Cargando productos…</p>
+    <div class="admin-product-list" data-product-list></div>
+  </section>
+  <script src="../../../scripts/admin-products.js"></script>
+</AdminLayout>

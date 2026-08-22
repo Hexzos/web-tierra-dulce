@@ -25,3 +25,13 @@ Thumbs.db
 # IDEs
 .idea/
 .vscode/
+
+# Reproducible local SQLite databases
+db/local/
+*.sqlite
+*.sqlite3
+*.db
+*.sqlite-shm
+*.sqlite-wal
+*-shm
+*-wal

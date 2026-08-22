@@ -8,6 +8,8 @@ import Location from '../components/sections/Location.astro';
 import Footer from '../components/layout/Footer.astro';
 import OrderPanel from '../components/layout/OrderPanel.astro';
 import WhatsAppButton from '../components/layout/WhatsAppButton.astro';
+import { getPublicProducts } from '../lib/catalog.js';
+const products = getPublicProducts();
 ---
 
 <BaseLayout>
@@ -19,6 +21,6 @@ import WhatsAppButton from '../components/layout/WhatsAppButton.astro';
     <Location />
   </main>
   <Footer />
-  <OrderPanel />
+  <OrderPanel products={products} />
   <WhatsAppButton />
 </BaseLayout>

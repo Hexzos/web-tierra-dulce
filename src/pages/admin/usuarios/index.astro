@@ -1,0 +1,4 @@
+---
+import AdminLayout from'../../../layouts/AdminLayout.astro';import{getDevelopmentProfiles}from'../../../lib/admin/adminData.js';const profiles=getDevelopmentProfiles();
+---
+<AdminLayout title="Usuarios" currentPath="/admin/usuarios/" profiles={profiles}><section class="admin-products" data-admin-users><header class="admin-page-header"><div><p class="admin-eyebrow">USUARIOS</p><h1>Usuarios</h1><p>Administra las personas que pueden acceder al panel.</p></div><a class="admin-primary-action" href="/admin/usuarios/invitar/">Invitar usuario</a></header><div class="admin-field"><label for="user-search">Buscar usuario</label><input id="user-search" type="search" placeholder="Nombre, usuario o email" data-user-search /></div><p data-user-message role="status">Cargando…</p><div class="admin-product-list" data-user-list></div></section><script src="../../../scripts/admin-users.js"></script></AdminLayout>

@@ -1,0 +1,4 @@
+---
+import AdminLayout from'../../../../layouts/AdminLayout.astro';import UserForm from'../../../../components/admin/UserForm.astro';import{getDevelopmentProfiles}from'../../../../lib/admin/adminData.js';const profiles=getDevelopmentProfiles();
+---
+<AdminLayout title="Editar usuario" currentPath="/admin/usuarios/" profiles={profiles}><section class="admin-form-page"><header class="admin-page-header"><div><p class="admin-eyebrow">USUARIOS</p><h1>Editar usuario</h1></div></header><UserForm mode="edit" /></section><script src="../../../../scripts/admin-user-form.js"></script></AdminLayout>

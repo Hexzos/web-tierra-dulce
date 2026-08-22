@@ -1,0 +1,54 @@
+---
+const { mode = 'create' } = Astro.props;
+const isEdit = mode === 'edit';
+---
+<form class="admin-product-form" data-product-form data-mode={mode} novalidate>
+  <div class="admin-form-grid">
+    <div class="admin-field admin-field--wide">
+      <label for="product-name">Nombre</label>
+      <input id="product-name" name="name" required minlength="3" maxlength="80" autocomplete="off" />
+      <small>Entre 3 y 80 caracteres.</small><p class="admin-field-error" data-error-for="name"></p>
+    </div>
+    <div class="admin-field admin-field--wide">
+      <label for="product-description">Descripción</label>
+      <textarea id="product-description" name="description" required minlength="10" maxlength="500" rows="5"></textarea>
+      <small>Entre 10 y 500 caracteres.</small><p class="admin-field-error" data-error-for="description"></p>
+    </div>
+    <div class="admin-field admin-field--wide">
+      <label for="product-slug">Slug</label>
+      <input id="product-slug" name="slug" required minlength="2" maxlength="100" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" autocomplete="off" />
+      <small>Minúsculas, números y guiones; debe ser único.</small><p class="admin-field-error" data-error-for="slug"></p>
+      {isEdit && <p class="admin-slug-warning"><strong>Atención:</strong> cambiar el slug puede invalidar referencias existentes del carrito local.</p>}
+    </div>
+    <div class="admin-field">
+      <label for="product-category">Categoría</label>
+      <select id="product-category" name="categoryId"><option value="">Sin categoría</option></select>
+      <small>Sólo categorías existentes.</small><p class="admin-field-error" data-error-for="categoryId"></p>
+    </div>
+    <div class="admin-field">
+      <label for="product-status">Estado</label>
+      <select id="product-status" name="status" required>
+        <option value="draft">Borrador</option><option value="published">Publicado</option><option value="sold_out">Agotado</option><option value="hidden">Oculto</option><option value="archived">Archivado</option>
+      </select>
+      <p class="admin-field-error" data-error-for="status"></p>
+    </div>
+    <div class="admin-field admin-field--wide">
+      <label for="product-image">Imagen</label><input id="product-image" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp" /><small>JPEG, PNG o WebP; máximo 5 MB. En móvil puedes usar las opciones nativas de cámara o galería.</small>
+      <div class="admin-media-preview"><img data-image-preview hidden alt="" /><button type="button" class="admin-row-action" data-remove-image hidden>Eliminar imagen</button></div>
+      <label for="product-image-alt">Texto alternativo de la imagen</label>
+      <input id="product-image-alt" name="imageAlt" required minlength="5" maxlength="180" autocomplete="off" />
+      <small>Describe brevemente lo que aparece en la fotografía. Este texto ayuda a personas que utilizan lectores de pantalla y también permite entender la imagen cuando no puede cargarse. Ejemplo: Cheesecake de frutos rojos decorado con frutillas y arándanos.</small><span data-alt-count>0 / 180 caracteres</span><p class="admin-field-error" data-error-for="imageAlt"></p>
+    </div>
+    <div class="admin-field">
+      <label for="product-order">Orden</label>
+      <input id="product-order" name="displayOrder" type="number" required min="0" step="1" value="0" />
+      <p class="admin-field-error" data-error-for="displayOrder"></p>
+    </div>
+  </div>
+  {isEdit && <div class="admin-context-history" data-context-history>Cargando historial resumido…</div>}
+  <p class="admin-form-message" data-form-message role="status" aria-live="polite"></p>
+  <div class="admin-form-actions">
+    <button class="admin-primary-action" type="submit" data-form-submit>{isEdit ? 'Guardar cambios' : 'Crear producto'}</button>
+    <a class="admin-secondary-action" href="/admin/productos/">Cancelar</a>
+  </div>
+</form>

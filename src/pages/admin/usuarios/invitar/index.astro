@@ -1,0 +1,4 @@
+---
+import AdminLayout from'../../../../layouts/AdminLayout.astro';import UserForm from'../../../../components/admin/UserForm.astro';import{getDevelopmentProfiles}from'../../../../lib/admin/adminData.js';const profiles=getDevelopmentProfiles();
+---
+<AdminLayout title="Invitar usuario" currentPath="/admin/usuarios/" profiles={profiles}><section class="admin-form-page"><header class="admin-page-header"><div><p class="admin-eyebrow">DEV ONLY</p><h1>Invitar usuario</h1><p>La invitación se registrará localmente; no se enviará correo.</p></div></header><UserForm mode="invite" /></section><script src="../../../../scripts/admin-user-form.js"></script></AdminLayout>

@@ -1,10 +1,12 @@
-import { products } from '../data/products.js';
-
 const STORAGE_KEY = 'tierra-dulce-order-v1';
 const MAX_QUANTITY = 20;
-const categoryOrder = ['cookies', 'rollos'];
-const categoryLabels = { cookies: 'Cookies', rollos: 'Rollos de canela', novedades: 'Novedades' };
-const productCategories = new Map(products.map((product) => [product.id, product.category]));
+const catalogNode = document.querySelector('[data-order-catalog]');
+let catalog = [];
+try { catalog = JSON.parse(catalogNode?.textContent ?? '[]'); } catch {}
+const categoryOrder = [...new Set(catalog.map((product) => product.category).filter(Boolean))];
+const categoryLabels = Object.fromEntries(catalog.filter((product) => product.category).map((product) => [product.category, product.categoryLabel]));
+const productCategories = new Map(catalog.map((product) => [product.id, product.category]));
+const productStatuses = new Map(catalog.map((product) => [product.id, product.status]));
 const toSentenceCase = (value) => {
   const label = value.replaceAll('-', ' ').trim();
   if (!label) return 'Novedades';
@@ -34,14 +36,14 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
       if (!Array.isArray(parsed)) throw new Error('Invalid order');
       order = parsed
         .filter((item) => typeof item?.productId === 'string' && typeof item?.name === 'string' && Number.isInteger(item?.quantity) && item.quantity > 0)
-        .map((item) => ({ productId: item.productId, name: item.name, quantity: Math.min(item.quantity, MAX_QUANTITY) }));
+        .map((item) => ({ productId: item.productId, name: item.name, quantity: Math.min(item.quantity, MAX_QUANTITY), unavailable: productStatuses.get(item.productId) === 'sold_out' }));
     } catch {
       order = [];
       localStorage.removeItem(STORAGE_KEY);
     }
   };
 
-  const total = () => order.reduce((sum, item) => sum + item.quantity, 0);
+  const total = () => order.reduce((sum, item) => sum + (item.unavailable ? 0 : item.quantity), 0);
   const groupedOrder = () => {
     const grouped = new Map();
     order.forEach((item) => {
@@ -55,15 +57,15 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
     return categories.map((category) => [category, grouped.get(category)]);
   };
   const save = () => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(order)); } catch {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(order.map(({productId,name,quantity})=>({productId,name,quantity})))); } catch {}
     render();
   };
   const buildOrderInquiryMessage = () => {
     const sections = groupedOrder().map(([category, items]) => {
       const label = toSentenceCase(categoryLabels[category] ?? category);
-      const lines = items.map((item) => `• ${item.name} × ${item.quantity}`).join('\n');
-      return `${label}\n${lines}`;
-    }).join('\n\n');
+      const lines = items.filter((item)=>!item.unavailable).map((item) => `• ${item.name} × ${item.quantity}`).join('\n');
+      return lines ? `${label}\n${lines}` : '';
+    }).filter(Boolean).join('\n\n');
     const units = total();
     return `Hola, vi los productos de su página web y quisiera consultar por:\n\n${sections}\n\nTotal: ${units} ${units === 1 ? 'producto' : 'productos'}\n\n¿Podrían confirmarme la disponibilidad y los precios de estos productos?\n\nQuedo atento/a al valor total y a los medios de pago disponibles.`;
   };
@@ -74,11 +76,14 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
     line.dataset.productId = item.productId;
     line.innerHTML = `<strong></strong><div class="order-line__actions"><div class="order-line__controls"><button type="button" data-line-decrease>−</button><span></span><button type="button" data-line-increase>+</button></div><button class="order-line__remove" type="button" data-line-remove>Eliminar</button></div>`;
     line.querySelector('strong').textContent = item.name;
+    if(item.unavailable){line.querySelector('strong').textContent += ' — No disponible';line.dataset.unavailable='true';}
     line.querySelector('.order-line__controls span').textContent = String(item.quantity);
     const decrease = line.querySelector('[data-line-decrease]');
     const increase = line.querySelector('[data-line-increase]');
     decrease.setAttribute('aria-label', `Disminuir cantidad de ${item.name}`);
     increase.setAttribute('aria-label', `Aumentar cantidad de ${item.name}`);
+    decrease.disabled = Boolean(item.unavailable);
+    increase.disabled = Boolean(item.unavailable);
     return line;
   };
 
@@ -89,7 +94,7 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
       node.toggleAttribute('data-active', units > 0);
     });
     if (!(groups instanceof HTMLElement) || !(empty instanceof HTMLElement) || !(filled instanceof HTMLElement)) return;
-    const hasItems = order.length > 0 && units > 0;
+    const hasItems = order.length > 0;
     empty.hidden = hasItems;
     filled.hidden = !hasItems;
     groups.replaceChildren();
@@ -101,7 +106,11 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
         const list = document.createElement('ul'); list.className = 'order-list'; list.setAttribute('role', 'list');
         list.append(...items.map(createLine)); section.append(title, list); groups.append(section);
       });
-      if (summaryTotal instanceof HTMLElement) summaryTotal.textContent = `${units} ${units === 1 ? 'producto' : 'productos'}`;
+      if (summaryTotal instanceof HTMLElement) summaryTotal.textContent = `${units} ${units === 1 ? 'producto' : 'productos'} disponibles`;
+    }
+    if (whatsapp instanceof HTMLAnchorElement) {
+      whatsapp.toggleAttribute('aria-disabled', units === 0);
+      whatsapp.tabIndex = units === 0 ? -1 : 0;
     }
   };
 
@@ -145,6 +154,7 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
     card.querySelector('[data-card-increase]')?.addEventListener('click', () => { quantity = Math.min(MAX_QUANTITY, quantity + 1); update(); });
     card.querySelector('[data-add-order]')?.addEventListener('click', () => {
       const productId = card.getAttribute('data-product-id'); const name = card.getAttribute('data-product-name'); if (!productId || !name) return;
+      if (card.getAttribute('data-product-status') === 'sold_out' || productStatuses.get(productId) === 'sold_out') return;
       const current = order.find((item) => item.productId === productId);
       if (current) current.quantity = Math.min(MAX_QUANTITY, current.quantity + quantity); else order.push({ productId, name, quantity });
       save(); const feedback = card.querySelector('[data-add-feedback]');
@@ -156,6 +166,7 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
     const button = event.target instanceof Element ? event.target.closest('button') : null;
     const line = button?.closest('[data-product-id]'); const item = order.find((entry) => entry.productId === line?.getAttribute('data-product-id'));
     if (!button || !item) return;
+    if (item.unavailable && !button.hasAttribute('data-line-remove')) return;
     if (button.hasAttribute('data-line-increase')) item.quantity = Math.min(MAX_QUANTITY, item.quantity + 1);
     if (button.hasAttribute('data-line-decrease')) item.quantity = Math.max(1, item.quantity - 1);
     if (button.hasAttribute('data-line-remove')) order = order.filter((entry) => entry !== item);
@@ -165,6 +176,7 @@ if (panel instanceof HTMLElement && !panel.dataset.initialized) {
   whatsapp?.addEventListener('click', (event) => {
     if (whatsapp instanceof HTMLAnchorElement) {
       event.preventDefault();
+      if (total() === 0) return;
       const url = `https://wa.me/56997293650?text=${encodeURIComponent(buildOrderInquiryMessage())}`;
       window.open(url, '_blank', 'noopener,noreferrer');
     }

@@ -1,5 +1,6 @@
 ---
-const { isCatalog = false } = Astro.props;
+const { isCatalog = false, products = [] } = Astro.props;
+const orderCatalog = products.map(({ id, category, categoryLabel, status }) => ({ id, category, categoryLabel, status }));
 ---
 <div class="order-backdrop" data-order-backdrop hidden></div>
 <aside class="order-panel" id="order-panel" role="dialog" aria-modal="true" aria-labelledby="order-title" aria-hidden="true" data-order-panel data-is-catalog={String(isCatalog)}>
@@ -27,6 +28,7 @@ const { isCatalog = false } = Astro.props;
     </div>
   </div>
 </aside>
+<script type="application/json" data-order-catalog set:html={JSON.stringify(orderCatalog).replaceAll('<', '\\u003c')}></script>
 <script src="../../scripts/order.js"></script>
 <style>
   .order-backdrop{position:fixed;z-index:29;inset:0;background:rgb(16 36 35 / 46%);opacity:0;transition:opacity 420ms ease}

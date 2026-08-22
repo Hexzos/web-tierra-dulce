@@ -1,0 +1,68 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import DashboardMetricCard from '../../components/admin/DashboardMetricCard.astro';
+import { getCatalogDashboardStats, getDevelopmentProfiles } from '../../lib/admin/adminData.js';
+
+const stats = getCatalogDashboardStats();
+const profiles = getDevelopmentProfiles();
+---
+<AdminLayout title="Inicio" currentPath="/admin/" profiles={profiles}>
+  <section class="admin-dashboard" aria-labelledby="dashboard-title">
+    <header class="admin-page-header">
+      <div>
+        <p class="admin-eyebrow">Resumen del catálogo</p>
+        <h1 id="dashboard-title">Hola, <span data-admin-user-first-name>equipo</span>.</h1>
+        <p>Una vista rápida del contenido disponible en la base local.</p>
+      </div>
+      <span class="admin-dev-badge">Entorno local</span>
+    </header>
+
+    <div class="admin-notice" role="note">
+      <strong>Prototipo administrativo</strong>
+      <p>Esta sesión permite validar interfaz y roles. No protege datos ni reemplaza la autenticación de producción.</p>
+    </div>
+
+    <section aria-labelledby="metrics-title">
+      <div class="admin-section-heading">
+        <h2 id="metrics-title">Estado de productos</h2>
+        <p>Datos build-time con actualización dinámica desde la API local.</p>
+      </div>
+      <div class="admin-metrics-grid">
+        <DashboardMetricCard label="Total" value={stats.totalProducts} metric="totalProducts" tone="primary" />
+        <DashboardMetricCard label="Publicados" value={stats.published} metric="published" tone="success" />
+        <DashboardMetricCard label="Agotados" value={stats.soldOut} metric="soldOut" tone="warning" />
+        <DashboardMetricCard label="Borradores" value={stats.draft} metric="draft" />
+        <DashboardMetricCard label="Ocultos" value={stats.hidden} metric="hidden" />
+        <DashboardMetricCard label="Archivados" value={stats.archived} metric="archived" />
+      </div>
+    </section>
+
+    <section class="admin-secondary-grid" aria-label="Otros estados del catálogo">
+      <article class="admin-summary-card">
+        <span>Categorías</span><strong data-admin-stat="totalCategories">{stats.totalCategories}</strong>
+        <p>Total de categorías registradas.</p>
+      </article>
+      <article class="admin-summary-card">
+        <span>Sin categoría</span><strong data-admin-stat="uncategorized">{stats.uncategorized}</strong>
+        <p>Productos válidos sin categoría asignada.</p>
+      </article>
+      <article class="admin-summary-card">
+        <span>Revisiones pendientes</span><strong data-admin-stat="pendingRevisions">{stats.pendingRevisions}</strong>
+        <p>Solicitudes que requerirán revisión futura.</p>
+      </article>
+    </section>
+
+    <section class="admin-session-card" aria-labelledby="session-title">
+      <div>
+        <p class="admin-eyebrow">Sesión actual</p>
+        <h2 id="session-title" data-admin-user-name></h2>
+      </div>
+      <dl>
+        <div><dt>Rol</dt><dd data-admin-user-role></dd></div>
+        <div><dt>Publicación</dt><dd data-admin-publishing-mode></dd></div>
+      </dl>
+      <p class="admin-auth-warning">La visibilidad de interfaz no equivale a autorización.</p>
+    </section>
+  </section>
+  <script src="../../scripts/admin-dashboard.js"></script>
+</AdminLayout>

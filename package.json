@@ -9,9 +9,18 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "admin:api": "node scripts/admin-api.mjs",
+    "db:init": "node scripts/db-init.mjs",
+    "test:db": "node --test tests/database.test.mjs tests/admin-data.test.mjs",
+    "test:admin-api": "node --test tests/admin-products.test.mjs tests/admin-api.test.mjs",
+    "test:hito3b": "node --test tests/hito3b.test.mjs",
+    "test:hito3c": "node --test tests/hito3c.test.mjs",
+    "test:hito4": "node --test tests/hito4.test.mjs",
+    "test:v1": "node --test tests/v1-closure.test.mjs"
   },
   "dependencies": {
-    "astro": "^7.2.0"
+    "astro": "^7.2.0",
+    "better-sqlite3": "^13.0.3"
   }
 }
